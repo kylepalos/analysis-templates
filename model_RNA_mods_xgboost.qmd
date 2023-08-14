@@ -1,0 +1,335 @@
+---
+title: "XGBoost predict RNA modification class"
+format: 
+  html:
+    code-fold: true
+    toc: true
+    fig-width: 9.5
+    fig-height: 6.5
+    embed-resources: true
+    warning: false
+    erro: false
+editor_options: 
+  chunk_output_type: console
+date: Mar 03, 2023
+author: Kyle Palos
+---
+
+## Overview
+
+ModTect reports more modifications than HAMR does, but does not predict the type of modification, HAMR does.
+
+Because these 2 tools are based on very similar premises, I think that ModTect output can be trained on HAMR output to predict modification class.
+
+### Load packages
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(data.table)
+library(tidymodels)
+library(readr)
+library(vroom)
+```
+
+### Load in data
+
+```{r}
+
+# this is ModTect output from Maize RNA-seq
+# Specifically, this is the output after performing bedtools intersect against a bed file of Maize genes
+modtect <- vroom("/mnt/Milly/Work/Sorghum_epitranscriptomics_project/Sorghum_seq_third_replacement_round/modeling_hamr/combined_zm.txt",
+                 col_names = F)
+
+# Make a smaller data frame that I can put onto GitHub so people can follow along
+modtect1k <- modtect %>%
+  slice_sample(n = 1000)
+
+# write.table(modtect1k, 
+#             "zm_modtect_sample_file.txt",
+#             sep = "\t", quote = F, row.names = F, col.names = F)
+
+
+# This is the ModTect header
+header <- read_delim("/mnt/Milly/Work/Sorghum_epitranscriptomics_project/Sorghum_seq_third_replacement_round/modeling_hamr/modtect_header.txt", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+
+
+# set the header as the column names for ModTect
+colnames(modtect) <- colnames(header)
+
+# rename columns and get rid of some unnecessary columns
+modtect <- modtect %>% rename(tx_chr = 34, tx_start = 35, tx_end = 36, gene = 37, overlap = 38, file = 39) %>%
+  select(-5,-6,-7,-8)
+
+# get rid of input file name (there are many experiments of ModTect that have concatenated into 1 input file)
+modtect$file <- gsub('_intersected.txt', '', modtect$file)
+
+# filter for high coverage sights and make each combination of chromosome and site a combined column so we have unique site identifiers.
+
+
+modtect %>%
+  select(-overlap) %>%
+  distinct() %>%
+  unite("full_position",
+        1:3,
+        sep = "_") %>%
+  filter(depth >= 10) %>%
+    mutate(sum_upper = rowSums(.[13:16]), # sum the counts coming from the forward and reverse strands to determine if there is a strand bias
+         sum_lower = rowSums((.[17:20]))) -> modtect
+```
+
+### Load in HAMR datasets
+
+HAMR used a KNN model to predict RNA modifications based on Yeast tRNA reverse-transcriptase error profiles. I don't have that original Yeast data but I will model ModTect error profiles on HAMR classifications to get predicted modification class.
+
+```{r}
+
+# Maize HAMR output
+zm1_hm <- read_delim("/mnt/Milly/Work/Sorghum_epitranscriptomics_project/Sorghum_seq_third_replacement_round/modeling_hamr/zm1.mods.txt", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+
+# filter for relevant columns and generate a variant proportion column that ModTect directly reports
+zm1_hm %>%
+  select(4:10, 16) %>%
+  mutate(variant_proportion = (nonref / (nonref + ref))) %>%
+  select(-nonref, -ref) -> zm1_hm
+
+```
+
+### Data cleaning
+
+Get the ModTect data in a similar format as the HAMR data for modeling purposes.
+
+```{r}
+modtect %>%
+  select(1:3, 13:20) %>% # select relevant columns
+  rowid_to_column(var = "rowid") -> modtect2
+
+modtect2 %>%
+  select(-full_position) %>% # full position is not a meaningful column to predict on so remove it for now
+  column_to_rownames(var = "rowid") %>%
+  mutate(A = A_count + a_count, # combine nucleotide counts from opposite strands
+         "T" = T_count + t_count,
+         C = C_count + c_count,
+         G = G_count + g_count) %>%
+  select(-A_count, -T_count, -C_count, -G_count,
+         -a_count, -t_count, -c_count, -g_count) %>%
+  rename(refnuc = 1) %>%
+  select(1,3,5,6,4,2) -> modtect2
+
+# rearrange columns
+zm1_hm %>%
+  select(1,2,3,4,5,7,6) -> zm1_hm
+
+# change character columns to factor
+zm1_hm$pred.mod <- as.factor(zm1_hm$pred.mod)
+zm1_hm$refnuc <- as.factor(zm1_hm$refnuc)
+
+# similarly for ModTect
+modtect2$refnuc <- as.factor(modtect2$refnuc)
+
+zm1_hm %>%
+  mutate(pred.mod2 = case_when(pred.mod == "m1A|m1I|ms2i6A" ~ "m1A",
+                              pred.mod == "i6A|t6A" ~ "i6A",
+                              pred.mod == "D" ~ "D",
+                              pred.mod == "Y" ~ "Y",
+                              pred.mod == "m1G" ~ "m1G",
+                              pred.mod == "m2G|m22G" ~ "m2G",
+                              pred.mod == "m3C" ~ "m3C")) %>% # simplify modification nomenclature
+  select(-pred.mod) %>%
+  rename(pred.mod = pred.mod2) -> zm1_hm
+
+# change this modification to a factor
+zm1_hm$pred.mod <- as.factor(zm1_hm$pred.mod)
+```
+
+HAMR data is ready for developing a model
+
+I am going to use xgboost because I have a lot of data and it works well out of the box
+
+Takes a lot of hyperparameter tuning though
+
+Going to follow along with Julia Silge's tutorial for using xgboost in classification on volleyball winning data [here](https://www.youtube.com/watch?v=hpudxAmxHSM&t=106s)
+
+Split the data and stratify for pred.mod because it is imbalanced (there is a lot less m2G compared to m1A and m3C)
+
+### Begin modeling
+
+```{r}
+set.seed(123)
+
+hm_split <- initial_split(zm1_hm, strata = pred.mod) # Perform the initial data split, stratifying based on our desred outcome (predicted modification)
+
+# split into training and testing using default 70/30 split
+hm_training <- training(hm_split)
+hm_test <- testing(hm_split)
+```
+
+Specify that we are going to use boosting classification trees
+
+And that we basically want the computer to find the optimal values for all the important hyper-parameters
+
+```{r}
+xgb_spec <- boost_tree(
+  trees = 1000,
+  tree_depth = tune(), min_n = tune(), loss_reduction = tune(),
+  sample_size = tune(), mtry = tune(), learn_rate = tune()
+) %>%
+  set_engine("xgboost") %>%
+  set_mode("classification")
+```
+
+But what values do we even want it to try?
+
+Well, grid latin hypercube generates near-random sequences that usually covers your "data space" more equally than other methods
+
+I'm having latin hypercube sampling attempt 20 values
+
+```{r}
+xgb_grid <- grid_latin_hypercube(
+  tree_depth(),
+  min_n(),
+  loss_reduction(),
+  sample_size = sample_prop(),
+  finalize(mtry(), hm_training),
+  learn_rate(),
+  size = 30
+)
+```
+
+Specify our workflow
+
+Basically, we are going to predict modification class based on all input data
+
+```{r}
+xgb_wf <- workflow() %>%
+  add_formula(pred.mod ~ .) %>%
+  add_model(xgb_spec)
+```
+
+V fold cross validation randomly splits the training data into roughly equal sized groups (folds).
+
+V-fold CV essentially performs the training-test split multiple times and allows for more accurate model generation
+
+```{r}
+
+set.seed(123)
+
+hm_folds <- vfold_cv(hm_training, strata = pred.mod)
+```
+
+Set up multiple computing nodes and begin to perform the grid tuning (hyper-parameter selection) and modeling
+
+```{r}
+doParallel::registerDoParallel()
+
+set.seed(234)
+
+xgb_res <- tune_grid(
+  xgb_wf,
+  resamples = hm_folds,
+  grid = xgb_grid,
+  control = control_grid(save_pred = TRUE)
+)
+```
+
+### Evaluate model performance:
+
+```{r}
+xgb_res %>%
+  collect_metrics() %>% 
+  filter(.metric == "roc_auc") %>% 
+  select(mean, mtry:sample_size) %>%
+  pivot_longer(mtry:sample_size, # reshape the data for better graphing
+               names_to = "parameter",
+               values_to = "value") %>%
+  ggplot(aes(x = value, y = mean, color = parameter)) +
+  geom_point(show.legend = F) +
+  facet_wrap(~parameter, scales = "free_x")
+
+
+```
+
+y-axis values are the area under the curve values
+
+higher learn rates and loss reductions boost model performance. Other parameters are less linearly associated with performance.
+
+Let's look at the 5 best models:
+
+```{r}
+show_best(xgb_res, "roc_auc") %>% view()
+```
+
+5 best models have somewhat different parameters
+
+i.e., you can get to the same performance with very different parameters. This is characteristic of XGboost modeling
+
+Select the best model by classifier performance
+
+```{r}
+best_auc <- select_best(xgb_res, "roc_auc")
+```
+
+Now we need to finalize the workflow
+
+```{r}
+final_xgb <- finalize_workflow(xgb_wf, best_auc)
+```
+
+The final model now has the exact hyper-parameters
+
+What were the biggest contributors to the classification?
+
+```{r}
+library(vip)
+
+final_xgb %>%
+  fit(data = hm_training) %>%
+  pull_workflow_fit() %>%
+  vip(geom = "point")
+```
+
+Sort of as expected, the reference nucleotide, and the mutated nucleotide profiles are the biggest importance in this model.
+
+Make a confusion matrix
+
+```{r}
+final_result <- last_fit(final_xgb, hm_split)
+final_result %>%
+  collect_metrics()
+
+final_result %>%
+  collect_predictions() %>%
+  conf_mat(pred.mod, .pred_class)
+```
+
+### Model on any new data
+
+Using the input ModTect data
+
+```{r}
+final_result %>%
+  extract_workflow() %>%
+  predict(modtect2) -> modtect2
+
+zm %>%
+  select(1:3, 13:20) %>%
+  rowid_to_column(var = "rowid") -> zm3
+
+zm3$rowid <- as.character(zm3$rowid)
+
+
+zm2_mods %>%
+  rownames_to_column(var = "row") %>%
+  rename(pred.mod = 2) %>%
+  left_join(zm3, ., by = c("rowid" = "row")) %>%
+  select(full_position, pred.mod) %>%
+  distinct() -> predicted.mods
+  
+# write_delim(predicted.mods, "zm_predicted_modtect_mods.txt",
+#             delim = "\t")
+```
