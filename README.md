@@ -1,4 +1,62 @@
-# Research analyses
+# Repo to host code, scripts, and data for [DOI here]
+
+## The HAMR algorithm was run using [HAMRLINC](https://github.com/harrlol/HAMRLINC).
+
+## ModTect was run from raw bam files from STAR mapping. 
+
+### Make a STAR index
+
+```
+STAR --runMode genomeGenerate \
+--genomeDir genome \ # prefix for index files
+--genomeFastaFiles reference_genome.fa \ 
+--sjdbGTFfile genome_ann.gff3 \
+--sjdbGTFtagExonParentTranscript Parent # GFF3 specific option
+
+```
+
+### Trim reads using [fastp](https://github.com/OpenGene/fastp) in automatic mode
+
+```
+for i in *_1.fastq.gz
+> do
+> name=$(basename ${i} _1.fastq.gz);
+> fastp -i ${name}_1.fastq.gz -I ${name}_2.fastq.gz \
+> -o trimmed/${name}_1.fq.gz -O trimmed/${name}_2.fq.gz \
+> -w 8 -h ${name}.html -j ${name}.json
+> done
+```
+
+### Map reads
+
+```
+for i in *_1.fq.gz
+> do
+> name=$(basename ${i} _1.fq.gz);
+> STAR --runMode alignReads --readFilesIn ${name}_1.fq.gz ${name}_2.fq.gz \
+--runThreadN 16 --readFilesCommand zcat --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix ${name} \
+--alignIntronMax 10000 --outFilterIntronMotifs RemoveNoncanonical \ # 10KB maximum intron length
+--genomeDir /home/kpalos/sequencing_reads/trimmed/sb_star_index/ --outSAMstrandField intronMotif
+> done
+```
+
+### Run [ModTect](https://github.com/ktan8/ModTect)
+
+```
+for i in *.bam
+> do
+> name=$(basename ${i} Aligned.sortedByCoord.out.bam); # STAR aligned BAM file
+> python2 /home/kpalos/ModTect/ModTect_1_7_5_1.py \
+${name}Aligned.sortedByCoord.out.bam \
+reference_genome.fa 1 1 2 \ # the "1 1 2" is a ModTect place-holder to specify chromosome, start and end to search for mods - we're actually using a bed file
+--regionFile genes.bed --readlength ${} \ # insert the correct read length
+--minBaseQual 30 --label ${name} # SAM/BAM minimum alignment quality threshold
+> done
+```
+
+
+
 
 This repository is meant to host analysis templates for the various research projects that I have worked on.
 
