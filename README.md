@@ -55,6 +55,13 @@ reference_genome.fa 1 1 2 \ # the "1 1 2" is a ModTect place-holder to specify c
 > done
 ```
 
+### Intersect ModTect output with gene bed file
+To make the ModTect output work with [BedTools](https://bedtools.readthedocs.io/en/latest/), you need to duplicate the second column so it looks like:
+
+chromosome start end
+
+
+
 
 
 
