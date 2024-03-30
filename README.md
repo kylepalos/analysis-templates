@@ -2,7 +2,7 @@
 
 ## The HAMR algorithm was run using [HAMRLINC](https://github.com/harrlol/HAMRLINC).
 
-## ModTect was run from raw bam files from STAR mapping. 
+## ModTect was run using raw bam files from STAR mapping. 
 
 ### Make a STAR index
 
@@ -43,6 +43,7 @@ for i in *_1.fq.gz
 
 ### Run [ModTect](https://github.com/ktan8/ModTect)
 
+
 ```
 for i in *.bam
 > do
@@ -56,11 +57,39 @@ reference_genome.fa 1 1 2 \ # the "1 1 2" is a ModTect place-holder to specify c
 ```
 
 ### Intersect ModTect output with gene bed file
-To make the ModTect output work with [BedTools](https://bedtools.readthedocs.io/en/latest/), you need to duplicate the second column so it looks like:
+To make the ModTect output work with [BedTools](https://bedtools.readthedocs.io/en/latest/), you need to duplicate the second column so it's in bed format, e.g.:
 
-chromosome start end
+**chromosome** **start** **end**
 
+**I used the folloinwg bash code to duplicate that column:**
 
+```
+for i in *.txt # each ModTect file is a .txt file
+do
+name=$(basename ${i} .combined.txt);
+awk 'BEGIN { FS="\t"; OFS="\t" } { $2=$2 "\t" $2 } 1' ${name}.combined.txt > ${name}.txt # duplicate the second column - enforce tab delimited format
+done
+```
+
+**Bedtools intersect:**
+
+```
+for i in *.txt
+do
+name=$(basename ${i} .txt);
+bedtools intersect -wao -a ${name}.txt -b genes.bed > ${name}_intersected.txt
+done
+```
+
+**I'm going to combine all the PRM files together, add the filename to each file so experiment can be linked to PRMs:**
+
+```
+for i in *.txt
+do
+name=$(basename ${i} _intersected.txt);
+awk 'BEGIN{OFS="\t"}{print $0, FILENAME}' ${name}_intersected.txt > ${name}.txt
+done
+```
 
 
 
