@@ -1,4 +1,4 @@
-# Repo to host code, scripts, and data for [DOI here]
+# Repo to host code, scripts, and data for [the comparative RNA modification paper.](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-024-05486-7)
 
 ## The HAMR algorithm was run using [HAMRLINC](https://github.com/harrlol/HAMRLINC).
 
