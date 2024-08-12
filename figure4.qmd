@@ -1,0 +1,1110 @@
+---
+title: "Figure4"
+author: "Kyle Palos"
+editor: visual
+output: 
+  github_document:
+    fig_width: 12
+    fig_height: 9
+    dev: jpeg
+---
+
+This script performs the analyses going into Figure 4 and associated supplement of the comparative PRM manuscript
+
+Most of these analyses are from the concatenated ModTect output from this analysis of mRNA degradation in Arabidopsis:
+
+<https://www.pnas.org/doi/10.1073/pnas.1712312115>
+
+Data is hosted on FigShare
+
+## Download mods and metadata
+
+```{r}
+link <- "https://figshare.com/ndownloader/files/45555360"
+
+download.file(link, destfile = "~/Downloads/at_degradation.txt.gz")
+
+download.file("https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/degradation_experiment_metadata.txt?raw=TRUE",
+              destfile = "~/Downloads/at_degradation_metadata.txt")
+```
+
+### read in files
+
+```{r}
+library(tidyverse)
+
+deg <- read_delim("~/Downloads/at_degradation.txt.gz", 
+              delim = "\t", escape_double = FALSE, 
+              col_names = T, trim_ws = TRUE) %>%
+  separate(file,
+           into = c("SRA", "other"),
+           sep = "_GSM") 
+
+samples <- read_delim("~/Downloads/at_degradation_metadata.txt", 
+              delim = "\t", escape_double = FALSE, 
+              trim_ws = TRUE)
+
+
+
+deg <- deg %>%
+  left_join(., samples, by = c("SRA" = "Run"))
+
+```
+
+Keep PRMs present in at least 2 replicates:
+
+```{r}
+sites_to_keep <- deg %>% 
+  unite(col = full_position, 1:3, remove = F) %>% 
+  group_by(full_position) %>% 
+  summarise(n_experiments = n_distinct(SRA)) %>% 
+  filter(n_experiments >= 2) %>% 
+  distinct(full_position)
+
+deg <- deg %>%
+  unite(col = full_position, 1:3, remove = F) %>%
+  inner_join(., sites_to_keep, by = "full_position") %>%
+  distinct()
+
+deg$gene <- gsub("gene:", "", deg$gene)
+
+
+# load in accessory data files
+decay <- read_delim("~/Desktop/Nelson_lab/epitranscriptomics/mini_comparative_project/arabidopsis_degradation/large_quants/decay_model.txt", 
+                          delim = "\t", escape_double = FALSE, 
+                          trim_ws = TRUE)
+
+rpkm <- read_delim("~/Desktop/Nelson_lab/epitranscriptomics/mini_comparative_project/arabidopsis_degradation/large_quants/rpkm.txt", 
+                   delim = "\t", escape_double = FALSE, 
+                   trim_ws = TRUE)
+
+deg_results <- read_delim("~/Desktop/Nelson_lab/epitranscriptomics/mini_comparative_project/arabidopsis_degradation/large_quants/deg_results.txt", 
+                          delim = "\t", escape_double = FALSE, 
+                          trim_ws = TRUE)
+
+```
+
+load in supplemental data. There was some excel formatting for this supplemental data that I cleaned, which is why I'm providing the links to my github and not directly to the paper's data.
+
+Using the authors' computed RPKM values for RNA abundance as they have accounted for degradation specific
+
+```{r}
+rpkm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/rpkm_clean.txt?raw=TRUE"
+
+download.file(rpkm, "~/Downloads/rpkm.txt")
+
+decay <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/decay_model.txt?raw=TRUE"
+
+download.file(decay, "~/Downloads/decay.txt")
+
+
+# differentially expressed genes
+diffexp <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/deg_results.txt?raw=TRUE"
+
+download.file(diffexp, "~/Downloads/deg.txt")
+
+
+rpkm <- read_delim("~/Downloads/rpkm.txt", col_names = T, delim = "\t")
+decay <- read_delim("~/Downloads/decay.txt", col_names = T, delim = "\t",
+                     escape_double = FALSE, 
+                          trim_ws = TRUE)
+diffexp <-  read_delim("~/Downloads/deg.txt", col_names = T, delim = "\t",
+                     escape_double = FALSE, 
+                          trim_ws = TRUE)
+```
+
+load in the number of mapped reads per SRA:
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/arabidopsis_large_deg_mapped_reads.txt?raw=TRUE"
+
+download.file(link, destfile = "~/Downloads/mapped.txt")
+
+mapped <- read_table("~/Downloads/mapped.txt") %>%
+  rename(SRA = 1,
+         mapped = 2)
+```
+
+```{r}
+deg <- deg %>%
+  separate(Experiment, into = c("genotype", "time"), sep = "-", remove = F) 
+
+deg$time <- as.numeric(deg$time)
+```
+
+Establish the decay groups between mRNAs modified at TP0 and those not modified at TP0. Then plot the alpha decay rates of those groups
+
+# Figure 4E & Supp Figure 9D
+
+```{r}
+# these are the genes modified at time point 0
+genes_mod_time_0 <- deg %>%
+  filter(time == 0) %>%
+  filter(genotype == "WT") %>%
+  distinct(gene)
+
+
+# evaluate the decay rate of RNAs that had HAMR PTMs
+
+decay_mod <- decay %>%
+  inner_join(., genes_mod_time_0, by = "gene") %>%
+  mutate(type = "modified")
+
+decay_not_mod <- decay %>%
+  anti_join(., genes_mod_time_0, by = "gene") %>%
+  mutate(type = "not modified")
+
+
+decay <- rbind(decay_mod, decay_not_mod)  
+
+
+library(scales)
+decay %>%
+  ggplot(aes(x = type, y = alpha_WT, fill = type)) +
+  geom_boxplot() +
+#  geom_violin(trim = F) +
+  scale_y_log10() +
+  ggsci::scale_fill_npg(guide = "none") +
+  coord_flip() +
+#  coord_cartesian(ylim = c(1e-08,9e-02)) +
+  theme_classic(base_size = 12) +
+  xlab("") +
+  theme(text = element_text(face="bold")) +
+  ylab("α decay rate")
+
+# Supp 9D
+decay %>%
+  ggplot(aes(x = type, y = alpha_WT, fill = type)) +
+  geom_boxplot() +
+  scale_y_log10() +
+  ggsci::scale_fill_npg(guide = "none") +
+  coord_flip() +
+#  coord_cartesian(ylim = c(1e-08,9e-02)) +
+  theme_classic(base_size = 12) +
+  xlab("") +
+  theme(text = element_text(face="bold")) +
+  ylab("α decay rate")
+
+# 4E
+decay %>%
+  ggplot(aes(x = type, y = alpha_WT, fill = type)) +
+  geom_boxplot(outlier.shape = NA) +
+  scale_y_log10(breaks = c(.0001, .001, .01, .1), label = comma) +
+  ggsci::scale_fill_npg(guide = "none") +
+  #coord_flip() +
+ coord_cartesian(ylim = c(1e-04,1e-01)) +
+  theme_classic(base_size = 12) +
+  xlab("") +
+  theme(text = element_text(face="bold")) +
+  ylab("α decay rate")
+
+t.test(decay_mod$alpha_WT,
+       decay_not_mod$alpha_WT)
+```
+
+Now plot the alpha groups that modified and not-modified mRNAs belong to:
+
+# Figure 4F
+
+```{r}
+decay %>%
+  mutate(group2 = case_when(alpha_grp >= 1 & alpha_grp < 15 ~ "genotype dependent",
+                           alpha_grp == 15 ~ "genotype independent (exosome)")) %>%
+  ggplot(aes(x = alpha_grp, fill = str_wrap(group2, 15))) +
+  geom_histogram(color = "white", binwidth = 1) +
+  facet_wrap(~type, scales = "free") +
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values = c("lightgrey", "black"),
+                    name = "") +
+  xlab("α group") +
+  ylab("Number of RNAs") +
+  scale_x_continuous(breaks = c(1,5,10,15),
+                     labels = c(1,5,10,15)) +
+  theme(text = element_text(face = "bold"),
+        strip.background = element_blank())
+
+
+# associated chi-squared test:
+for_chi <- decay %>%
+  dplyr::distinct(gene, alpha_grp, type) %>%
+  group_by(alpha_grp, type) %>%
+  summarise(n = n_distinct(gene)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = type, values_from = n) %>%
+  column_to_rownames(var = "alpha_grp")
+
+chisq <- chisq.test(for_chi)
+
+chisq$observed
+chisq$expected
+chisq$p.value
+
+
+
+
+```
+
+Next, we're going to compare the types of RNA being modified at the 0 time point and 8 hours after arresting transcription.
+
+Load in Araport11 gene types, you can get this data here:
+
+<https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_gene_type>
+
+Or my Github:
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/araport11_gene_types.txt?raw=TRUE"
+
+download.file(link, destfile = "~/Downloads/types.txt")
+
+gene_types <- read.table("~/Downloads/types.txt", header = T)
+
+gene_types <- gene_types %>%
+  rename(gene = 1, type = 2)
+```
+
+# Figure 4A:
+
+```{r}
+deg %>%
+  dplyr::select(full_position, gene, Experiment) %>%
+  distinct() %>%
+  left_join(., gene_types, by = "gene") %>%
+  group_by(Experiment, type) %>%
+  summarise(n_mod_genes = n_distinct(gene)) %>%
+  ungroup() %>%
+  separate(Experiment,
+           into = c("genotype", "time"),
+           sep = "-") %>%
+  na.omit() %>%
+  filter(genotype == "WT") %>%
+  filter(time == 0 | time == 480) %>%
+  mutate(type2 = case_when(type == "small_nuclear_rna" ~ "sn/snoRNA",
+                           type == "small_nucleolar_rna" ~ "sn/snoRNA",
+                           type == "antisense_rna" ~ "lncRNA",
+                           type == "antisense_long_noncoding_rna" ~ "lncRNA",
+                           type == "long_noncoding_rna" ~ "lncRNA",
+                           type == "other_rna" ~ "lncRNA",
+                           type == "ribosomal_rna" ~ "rRNA",
+                           type == "protein_coding" ~ "mRNA",
+                           type == "pre_trna" ~ "tRNA")) %>%
+  filter(type2 != "miRNA_primary_transcript") %>%
+  mutate(time2 = case_when(time == "0" ~ "Time point: 0",
+                           time == "480" ~ "Time point: 8hr")) %>%
+  group_by(type2, time2) %>%
+  summarise(n_genes = sum(n_mod_genes)) %>%
+  ggplot(aes(x = type2, y = n_genes, fill = type2)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = n_genes),size = 16, hjust = 1) +
+  scale_y_log10() +
+  coord_flip() +
+  ggsci::scale_fill_npg(guide = "none") +
+  facet_wrap(~time2) +
+  xlab("") +
+  ylab("number of modified transcripts") +
+  theme_classic(base_size = 12) +
+  theme(text = element_text(face = "bold"),
+        strip.background = element_blank())
+```
+
+load in Salmon/tximport TPM values. This was done before utilizing the RPKM values to simply determine which genes were expressed (detectable) or not.
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/arabidopsis_degradation_tpm.txt.gz?raw=TRUE"
+
+download.file(link, "~/Downloads/at_degradation_tpm.txt.gz")
+
+tpm <- read.table("~/Downloads/at_degradation_tpm.txt.gz", header = T, sep = "\t")
+```
+
+The following code generates:
+
+# Supplemental Figure 9B
+
+# Figure 4B
+
+```{r}
+# Summarize the mean TPM per experiment (genotype by time-point)
+tpm_sum <- tpm %>%
+  as.data.frame() %>%
+  pivot_longer(!gene) %>%
+  # left_join(., types, by = "gene") %>%
+  left_join(., samples, by = c("name" = "Run")) %>%
+  left_join(., gene_types, by = "gene") %>%
+  group_by(Experiment, gene, type) %>%
+  summarise(mean_tpm = mean(value)) %>%
+  ungroup()
+
+
+# get the number of expressed genes per genotype/time-point
+tpm_sum2 <- tpm_sum %>%
+  group_by(Experiment, type) %>%
+  summarise(n_expressed_genes = sum(mean_tpm >= 1))
+
+# make the genotype and time components in separate columns
+summary_combined <- tpm_sum2 %>%
+  separate(Experiment,
+           into = c("genotype", "time"),
+           sep = "-") %>%
+  na.omit()
+
+
+# make the genotype a factor and set the level
+summary_combined$genotype <- factor(summary_combined$genotype, levels = c("WT", "sov", "varicose", "double"))
+
+# re-code the gene types
+summary_combined <- summary_combined %>%
+  mutate(type2 = case_when(type == "small_nuclear_rna" ~ "sn/snoRNA",
+                         type == "small_nucleolar_rna" ~ "sn/snoRNA",
+                         type == "antisense_rna" ~ "lncRNA",
+                         type == "antisense_long_noncoding_rna" ~ "lncRNA",
+                         type == "long_noncoding_rna" ~ "lncRNA",
+                         type == "other_rna" ~ "lncRNA",
+                         type == "ribosomal_rna" ~ "rRNA",
+                         type == "protein_coding" ~ "PCG",
+                         type == "pre_trna" ~ "tRNA")) %>%
+  filter(type2 != "miRNA_primary_transcript") 
+
+# supplemental figure 9b
+summary_combined %>%
+  group_by(genotype, time, type2) %>%
+  summarise(n_expr = sum(n_expressed_genes)) %>%
+  ungroup() %>%
+  filter(type2 != "rRNA") %>%
+  ggplot(aes(x = as.numeric(time), y = n_expr, color = genotype)) +
+  geom_line(linewidth = 3) + geom_point(size = 3.85)+
+  ggsci::scale_color_npg() +
+  # facet_wrap(genotype~name, scales = "free") +
+  #ggh4x::facet_grid2(genotype~name, scales = "free_y", independent = "y") +
+  theme_classic(base_size = 12) +
+  theme(text = element_text(face = "bold")) +
+  facet_wrap(~type2, scales = "free") +
+  xlab("time (minutes)") +
+  ylab("Number of expressed genes")
+
+
+
+# summarize the number of PRMs per experiment for plotting
+mod_summary <- deg %>%
+  group_by(Experiment) %>%
+  summarise(n_genes = n_distinct(gene),
+            n_sites = n_distinct(full_position)) %>%
+  ungroup()
+
+
+summary_combined <- tpm_sum2 %>%
+  left_join(., mod_summary, by = "Experiment")
+
+summary_combined <- summary_combined %>%
+  separate(Experiment,
+           into = c("genotype", "time"),
+           sep = "-") %>%
+  dplyr::rename("n expr genes" = 4,
+                "n modified RNAs" = 5,
+                "n modified sites" = 6)
+
+summary_combined$genotype <- factor(summary_combined$genotype, levels = c("WT", "sov", "varicose", "double"))
+
+
+# Figure 4B 
+summary_combined %>%
+  mutate(gene_norm = `n modified RNAs`/`n expr genes`,
+         density = `n modified sites`/`n modified RNAs`) %>%
+  dplyr::rename("n modified normalized" = gene_norm,
+                mod_density = density) %>%
+  pivot_longer(!c(genotype,time, type)) %>%
+  filter(name == "n modified sites") %>%
+  ggplot(aes(x = as.numeric(time), y = value, color = genotype)) +
+  geom_line(linewidth = 3) + geom_point(size = 3.85)+
+  ggsci::scale_color_npg() +
+  # facet_wrap(genotype~name, scales = "free") +
+  #ggh4x::facet_grid2(genotype~name, scales = "free_y", independent = "y") +
+  theme_classic(base_size = 12) +
+  xlab("Time after transcription arrest") +
+  ylab("Number of PRM sites") +
+  theme(text = element_text(face = "bold"))
+
+```
+
+# Figure 4A response to reviewer:
+
+One of the reviewers correctly pointed out that figure 4A should show the proportion of each gene type modified relative to the number of expressed genes in that category. Do that here now that I've loaded in expression data.
+
+```{r}
+ n_expressed <- gene_types %>%  
+  mutate(type2 = case_when(type == "small_nuclear_rna" ~ "sn/snoRNA",
+                           type == "small_nucleolar_rna" ~ "sn/snoRNA",
+                           type == "antisense_rna" ~ "lncRNA",
+                           type == "antisense_long_noncoding_rna" ~ "lncRNA",
+                           type == "long_noncoding_rna" ~ "lncRNA",
+                           type == "other_rna" ~ "lncRNA",
+                           type == "ribosomal_rna" ~ "rRNA",
+                           type == "protein_coding" ~ "mRNA",
+                           type == "pre_trna" ~ "tRNA")) %>%
+  filter(type2 != "miRNA_primary_transcript")  %>%
+   na.omit() %>%
+   left_join(., tpm, by = "gene") %>%
+   na.omit() %>%
+   dplyr::select(-type) %>%
+    pivot_longer(!c(gene, type2)) %>%
+  left_join(., samples, by = c("name" = "Run")) %>%
+  group_by(Experiment, gene, type2) %>%
+  summarise(mean_tpm = mean(value)) %>%
+  ungroup() %>%
+   group_by(Experiment, type2) %>%
+   summarise(n_expressed = sum(mean_tpm >= 1)) %>%
+   ungroup() %>%
+   filter(Experiment == "WT-0" | Experiment == "WT-480") %>%
+   mutate(time2 = case_when(Experiment == "WT-0" ~ "Time point: 0",
+                            Experiment == "WT-480" ~ "Time point: 8hr"))
+ 
+
+ 
+ 
+ 
+ deg %>%
+  dplyr::select(full_position, gene, Experiment) %>%
+  distinct() %>%
+  left_join(., gene_types, by = "gene") %>%
+  group_by(Experiment, type) %>%
+  summarise(n_mod_genes = n_distinct(gene)) %>%
+  ungroup() %>%
+  separate(Experiment,
+           into = c("genotype", "time"),
+           sep = "-") %>%
+  na.omit() %>%
+  filter(genotype == "WT") %>%
+  filter(time == 0 | time == 480) %>%
+  mutate(type2 = case_when(type == "small_nuclear_rna" ~ "sn/snoRNA",
+                           type == "small_nucleolar_rna" ~ "sn/snoRNA",
+                           type == "antisense_rna" ~ "lncRNA",
+                           type == "antisense_long_noncoding_rna" ~ "lncRNA",
+                           type == "long_noncoding_rna" ~ "lncRNA",
+                           type == "other_rna" ~ "lncRNA",
+                           type == "ribosomal_rna" ~ "rRNA",
+                           type == "protein_coding" ~ "mRNA",
+                           type == "pre_trna" ~ "tRNA")) %>%
+  filter(type2 != "miRNA_primary_transcript") %>%
+  mutate(time2 = case_when(time == "0" ~ "Time point: 0",
+                           time == "480" ~ "Time point: 8hr")) %>%
+  group_by(type2, time2) %>%
+  summarise(n_genes = sum(n_mod_genes)) %>%
+   ungroup() %>%
+   left_join(., n_expressed, by = c("type2", "time2")) %>%
+   mutate(prop = 100*(n_genes / n_expressed)) %>%
+   mutate(prop2 = case_when(prop > 100 ~ 100,
+                            prop <= 100 ~ prop)) %>%
+   mutate(prop3 = round(prop2, 2)) %>%
+   filter(type2 != "rRNA") %>%
+     ggplot(aes(y = type2, x = prop2, fill = type2)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = prop3),size = 12, hjust = -.05) +
+  #scale_y_log10() +
+ # coord_flip() +
+  ggsci::scale_fill_npg(guide = "none") +
+   coord_cartesian(xlim = c(0,30)) +
+   #scale_y_discrete(breaks = c(0,1,2,3,4,5)) +
+  facet_wrap(~time2) +
+  ylab("") +
+  xlab("Percent of group modified") +
+  theme_classic(base_size = 12) +
+  theme(text = element_text(face = "bold"),
+        strip.background = element_blank())
+ 
+ ggsave(plot = last_plot(),
+        "/Users/kylepalos/Desktop/Nelson_lab/epitranscriptomics/mini_comparative_project/dec_2023_figures/figure4/percent_gene_type_modified.pdf",
+        width = 12, height = 9, units = "in")
+```
+
+Analyze authors' RPKM decreases in PRM marked mRNAs vs non-marked mRNAs
+
+This code generates figures:
+
+# Figure 4C
+
+```{r}
+# pivot RPKM longer
+rpkm <- rpkm %>%
+  pivot_longer(cols = !gene, 
+               names_to = c("genotype","time"), 
+               names_pattern = "(WT|sov|varicose|double)_(.*)",
+               values_to = "value") 
+
+rpkm$time <- gsub("_mean", "", rpkm$time)
+
+rpkm$time <- as.numeric(rpkm$time)
+
+
+# establish which mRNAs/genes are modified at TP0 
+# or after TP0
+# or modified in any experiemnt
+# or never observed to be modified
+mod_0_genes <- deg %>%
+  filter(time == 0) %>%
+  distinct(gene) %>%
+  mutate(class = "tp_0_mod")
+
+mod_after_0 <- deg %>%
+  anti_join(., mod_0_genes, by = "gene") %>%
+  distinct(gene) %>%
+  mutate(class = "after_0_mod")
+
+mod_genes <- deg %>%
+  distinct(gene)
+
+
+never_mod <- rpkm %>% distinct(gene) %>%
+  anti_join(., mod_genes, by = "gene") %>%
+  mutate(class = "never_mod") %>%
+  left_join(., rpkm, by = "gene")
+
+mod_0_genes <- deg %>%
+  filter(time == 0) %>%
+  distinct(gene) %>%
+  mutate(class = "tp_0_mod") %>%
+  left_join(., rpkm, by = "gene")
+
+mod_after_0 <- deg %>%
+  anti_join(., mod_0_genes, by = "gene") %>%
+  distinct(gene) %>%
+  mutate(class = "after_0_mod") %>%
+  left_join(., rpkm, by = "gene")
+
+
+# let's just compare modified at TP0 vs never mod
+tp0_vs_never_mod <- rbind(mod_0_genes, never_mod)
+
+
+# summarize the dataframe for number of expressed genes remaining at each time point relative to TP0
+tp0_vs_never_mod_decay <- tp0_vs_never_mod %>%
+  group_by(class, genotype, time) %>%
+  summarise(n_expressed = sum(value >= 1)) %>%
+  ungroup() %>%
+  distinct() %>%
+  group_by(class, genotype) %>%
+  mutate(percentage_remaining = n_expressed / n_expressed[time == 0] * 100) %>%
+  ungroup()
+
+# factor and re-level
+tp0_vs_never_mod_decay$genotype <- factor(tp0_vs_never_mod_decay$genotype, levels = c("WT", "sov", "varicose", "double"))
+
+
+tp0_vs_never_mod_decay %>%
+  na.omit() %>%
+  mutate(class2 = case_when(class == "never_mod" ~ "Never modified",
+                            class == "tp_0_mod" ~ "Mod at 0TP")) %>%
+  ggplot(aes(x = as.numeric(time), y = percentage_remaining, color = genotype,
+             linetype = class2)) +
+  geom_line(linewidth = 2.75) + geom_point(size = 4)+
+  #  facet_wrap(~ class2) +
+  ylab("Percent genes expressed") +
+  xlab("Time after transcription arrest") +
+  theme_classic(base_size = 12) +
+  theme(text = element_text(face = "bold"),
+        legend.key.size =  unit(0.75, "in")) +
+  ggsci::scale_color_npg() +
+  labs(linetype="class", color = "genotype")
+```
+
+Next make the figure for how RPKM decreases over time
+
+# Figure 4D
+
+```{r}
+stats <- tp0_vs_never_mod %>%
+  mutate(class2 = case_when(class == "never_mod" ~ "Never modified",
+                            class == "tp_0_mod" ~ "Mod at 0TP",
+                            class == "after_0_mod" ~ "Mod after 0TP")) %>%
+  group_by(gene, class2, genotype) %>%
+  mutate(decrease = ((value - value[time==0])/ value[time == 0])*100) %>%
+  filter(genotype == "WT") %>%
+  filter(time != "0") %>%
+  filter(decrease <= 100 & decrease >= -100) %>%
+  group_by(class2, time) %>%
+  summarise(mean = median(decrease, na.rm =T))
+
+
+
+tp0_vs_never_mod %>%
+  mutate(class2 = case_when(class == "never_mod" ~ "Never modified",
+                            class == "tp_0_mod" ~ "Mod at 0TP",
+                            class == "after_0_mod" ~ "Mod after 0TP")) %>%
+  group_by(gene, class2, genotype) %>%
+  mutate(decrease = ((value - value[time==0])/ value[time == 0])*100) %>%
+  filter(genotype == "WT") %>%
+  filter(time != "0") %>%
+ # filter(decrease <= 100 & decrease >= -100) %>%
+  ggplot(aes(x = as.factor(time), y = decrease, fill = class2)) +
+  geom_boxplot() +
+  ggsci::scale_fill_npg(name = "") +
+  coord_cartesian(ylim = c(-100,100)) +
+  #ggh4x::facet_grid2(time ~ class2, scales = "free_y", independent = "y") + 
+  theme_classic(base_size = 12)+
+  # scale_y_log10() +
+  theme(text = element_text(face = "bold")) +
+  xlab("Time after transcription arrest") +
+  ylab("RNA abundance % change after TP0") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black",
+             linewidth = 1.45)
+
+```
+
+Finally, generate
+
+# Supplemental Figure 9C
+
+```{r}
+summary_combined <- tpm_sum2 %>%
+  left_join(., mod_summary, by = "Experiment")
+
+summary_combined <- summary_combined %>%
+  separate(Experiment,
+           into = c("genotype", "time"),
+           sep = "-") %>%
+  dplyr::rename("n expr genes" = 4,
+                "n modified RNAs" = 5,
+                "n modified sites" = 6)
+
+summary_combined$genotype <- factor(summary_combined$genotype, levels = c("WT", "sov", "varicose", "double"))
+
+
+summary_combined %>%
+  na.omit() %>%
+  filter(type == "protein_coding") %>%
+  mutate(gene_norm = `n modified RNAs`/`n expr genes`,
+         density = `n modified sites`/`n modified RNAs`) %>%
+  dplyr::rename("n modified normalized" = gene_norm,
+                mod_density = density) %>%
+  dplyr::select(-type) %>% distinct() %>%
+  pivot_longer(!c(genotype,time)) %>%
+  filter(name == "n modified normalized") %>%
+  ggplot(aes(x = as.numeric(time), y = value, color = genotype)) +
+  geom_line(linewidth = 3) + geom_point(size = 3.85)+
+  ggsci::scale_color_npg() +
+  # facet_wrap(genotype~name, scales = "free") +
+  #ggh4x::facet_grid2(genotype~name, scales = "free_y", independent = "y") +
+  theme_classic(base_size = 12) +
+  xlab("Time after transcription arrest") +
+  #facet_wrap(~genotype, ncol = 2) +
+  ylab("Proportion of modified RNAs") +
+  theme(text = element_text(face = "bold"))
+```
+
+# 
+
+## Now start working on supplemental figure 10 (nonsense mediated decay)
+
+Start by loading in the counts of the SMG7/PAD4 RNA-seq dataset
+
+Keep in mind, these counts were taken from salmon and rounded to integers - for the paper I just used tximport to load in "true raw" values into DESeq2
+
+```{r}
+
+# load in counts
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/smg7_raw_salmon_counts.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/smg7_counts.txt")
+
+counts <- read.table("~/Downloads/smg7_counts.txt",
+                   header = T, sep = "\t")
+
+counts <- counts %>%
+  tibble::column_to_rownames(var = "gene")
+
+# make metadata table for DESeq2
+metadata <- colnames(counts) %>%
+  as.data.frame() %>%
+  dplyr::rename(Run = 1) %>%
+  mutate(genotype = rep(c("pad4", "smg7_pad4"), each = 3))
+```
+
+perform differential expression
+
+```{r}
+library(DESeq2)
+dds <- DESeqDataSetFromMatrix(counts, metadata, ~ genotype)
+
+dds <- DESeq(dds)
+
+
+res <- results(dds, contrast = c("genotype", "smg7_pad4", "pad4"),
+               tidy = T)
+
+up <- res %>%
+  filter(padj < .05) %>%
+  filter(log2FoldChange >= 1)
+
+down <- res %>%
+  filter(padj < .05) %>%
+  filter(log2FoldChange <= -1)
+```
+
+Load in ModTect for this dataset
+
+```{r}
+link <- "https://figshare.com/ndownloader/files/45581586"
+
+download.file(link, "~/Downloads/smg7_modtect.txt.gz")
+
+mods <- read_delim("~/Downloads/smg7_modtect.txt.gz", 
+                            delim = "\t", escape_double = FALSE, 
+                            trim_ws = TRUE) %>%
+  filter(depth >= 10)
+```
+
+Do data cleaning and determine if there's a significant overlap between mRNAs up-regulated in smg7_pad4/pad4 and mRNAs marked by PRMs
+
+# Supplemental Figure 10A
+
+```{r}
+mods$file <- gsub("_intersected.txt", "", mods$file)
+
+mods <- mods %>%
+  left_join(., metadata, by = c("file" = "Run"))
+
+mods$gene <- gsub("gene:", "", mods$gene)
+
+mods <- mods %>%
+  unite("full_position", chrom:position2, sep = "-") 
+
+keep <- mods %>%
+  group_by(full_position) %>%
+  summarise(n_exps = n_distinct(file)) %>%
+  ungroup() %>%
+  filter(n_exps >= 3)
+
+mods <- mods %>%
+  inner_join(., keep, by = "full_position")
+
+
+wt_mods <- mods %>% 
+  filter(genotype == "pad4") %>% 
+  distinct(gene)
+
+smg_mods <- mods %>% 
+  filter(genotype == "smg7_pad4") %>% 
+  distinct(gene)
+
+all_mods <- mods %>%
+  distinct(gene)
+
+mod_overlap <- list(`PRMs in smg7` = smg_mods$gene,
+                    `smg7 up-regulated` = up$row)
+
+
+library(ggplotify)
+library(ggvenn)
+venn <- as.ggplot(ggvenn(mod_overlap, text_size = 12,,
+                         show_percentage = F,
+                         fill_color = c("blue","red2"),
+                         set_name_size = 8),
+)
+
+venn
+```
+
+The numbers a slightly off because, as I mentioned above, I provided the rounded salmon raw counts instead of the raw salmon files which would have been more unruly to host and download.
+
+Next, download the PRMs closest to start/stop codons and exon-exon junctions for determining whether PRMs are enriched at specific features in NMD mutants:
+
+These "closest" files were generated by using bedtools intersect on a file of start codons, stop codons, and exon-exon junction (splice sites)
+
+Additionally, download an isoform level TPM file so we can remove non-expressed isoforms.
+
+```{r}
+# first load in isoform level expression
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/smg7_transcript_tpm.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/smg7_pad4_tx_tpm.txt")
+
+tx_tpm <- read_delim("~/Downloads/smg7_pad4_tx_tpm.txt", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+
+# generate a list of isoforms that are expressed
+expressed_txs <- tx_tpm %>%
+  pivot_longer(!tx) %>%
+  group_by(tx) %>%
+  mutate(n_exp_expr = sum(value > .1)) %>%
+  ungroup() %>%
+  filter(n_exp_expr >= 3) %>%
+  distinct(tx)
+
+
+
+
+# download Araport11 GTF to establish a transcript to gene mapping file and the strand of genes for orienting PRMs to exon-exon junctions:
+link <- "https://figshare.com/ndownloader/files/48355528"
+
+download.file(link, "~/Downloads/araport.gtf.gz")
+
+library(GenomicFeatures)
+
+txdb <- makeTxDbFromGFF("~/Downloads/araport.gtf.gz")
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+
+
+# tx2gene is a transcript to gene mapping file
+# get the strand of all genes
+genes <- genes(txdb)
+
+gene_strand <- as.data.frame(genes) %>%
+  dplyr::select(strand, gene_id) %>%
+  distinct() %>%
+  dplyr::rename(gene = gene_id)
+
+
+# now load in the bedtools outputs of PRMs in the 2 different genotypes
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/smg_pad4_closest_feature.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/smg7_pad4_close.txt")
+
+smg_close <- read_delim("~/Downloads/smg7_pad4_close.txt", 
+                         delim = "\t", escape_double = FALSE, 
+                         col_names = FALSE, trim_ws = TRUE) %>%
+  inner_join(., expressed_txs, by = c("X9" = "tx"))  %>% # only retain expressed transcripts
+  filter(grepl("[.]1", X9)) # only retain primary isoform
+
+
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure4_files/pad4_closest_feature.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/pad4_close.txt")
+
+pad_close <- read_delim("~/Downloads/pad4_close.txt", 
+                         delim = "\t", escape_double = FALSE, 
+                         col_names = FALSE, trim_ws = TRUE) %>%
+  inner_join(., expressed_txs, by = c("X9" = "tx"))  %>% # only retain expressed transcripts
+  filter(grepl("[.]1", X9)) # only retain primary isoform
+```
+
+next block of code will wrangle the "close" data frames to generate
+
+# Supplemental Figure 10B:
+
+```{r}
+
+# join with tx2gene, and rename some labels
+pad_close <- pad_close %>%
+  left_join(., tx2gene, by = c("X9" = "TXNAME")) %>%
+  filter(X10 != ".") %>%
+  filter(X4 == GENEID) %>%
+  #left_join(., strand, by = "gene") %>%
+  distinct() %>%
+  mutate(new_label = case_when(X10 == "stop_codon" ~ "Stop codon",
+                               X10 == "5ej" ~ "5' exon junction",
+                               X10 == "3ej" ~ "3' exon junction",
+                               X10 == "start_codon" ~ "Start codon")) %>%
+  left_join(., gene_strand, by = c("X4" = "gene")) %>%
+  mutate(new_distance = ifelse(strand == '+', -X11, X11))
+
+
+smg_close <- smg_close %>%
+  left_join(., tx2gene, by = c("X9" = "TXNAME")) %>%
+  filter(X10 != ".") %>%
+  filter(X4 == GENEID) %>%
+  #left_join(., strand, by = "gene") %>%
+  distinct() %>%
+  mutate(new_label = case_when(X10 == "stop_codon" ~ "Stop codon",
+                               X10 == "5ej" ~ "5' exon junction",
+                               X10 == "3ej" ~ "3' exon junction",
+                               X10 == "start_codon" ~ "Start codon"))  %>%
+  left_join(., gene_strand, by = c("X4" = "gene")) %>%
+  mutate(new_distance = ifelse(strand == '+', -X11, X11))
+
+
+
+facet_label <- smg_close %>%
+  distinct(new_label) %>%
+  mutate(x = -160,
+         y = .02)
+
+
+smg_close$new_label <- as.factor(smg_close$new_label)
+pad_close$new_label <- as.factor(pad_close$new_label)
+
+smg_close$new_label <- fct_relevel(smg_close$new_label, c(
+  "Start codon", "5' exon junction", "3' exon junction", "Stop codon"
+))
+
+pad_close$new_label <- fct_relevel(pad_close$new_label, c(
+  "Start codon", "5' exon junction", "3' exon junction", "Stop codon"
+))
+
+
+smg_close <- smg_close %>%
+  mutate(genotype = "smg7")
+pad_close <- pad_close %>%
+  mutate(genotype = "pad4")
+
+combined <- rbind(smg_close, pad_close) 
+
+
+
+combined %>%
+  mutate(genotype2 = case_when(genotype == "smg7" ~ "smg7-pad4",
+                              genotype == "pad4" ~ "pad4")) %>%
+  ggplot(aes(x = new_distance)) +
+  geom_density(size = 1.5, n = 65536, bw = 10) +
+  coord_cartesian(xlim = c(-150,150))+
+  scale_x_continuous(trans = "reverse") +
+  facet_grid(genotype2 ~ new_label) +
+  theme_classic(base_size = 12) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  ylab('Modification density') +
+  xlab("Nucleotides surrounding feature") +
+  theme(strip.background = element_blank(),
+        text = element_text(face = "bold"))
+```
+
+Going to do a similar workflow here to plot the PRM build up these transcript features with mRNAs up-regulated in smg7 (putative targets of NMD) vs mRNAs not significantly affected in the smg7 genotype
+
+generates
+
+# Supplemental Figure 10C
+
+```{r}
+smg7_combined_not_de <- combined %>%
+  mutate(genotype2 = case_when(genotype == "smg7" ~ "smg7-pad4",
+                               genotype == "pad4" ~ "pad4")) %>%
+  filter(genotype == "smg7") %>%
+  anti_join(., up, by = c("X4" = "row")) %>%
+  mutate(DE = "no")
+
+
+smg7_combined_de <- combined %>%
+  mutate(genotype2 = case_when(genotype == "smg7" ~ "smg7-pad4",
+                               genotype == "pad4" ~ "pad4")) %>%
+  filter(genotype == "smg7") %>%
+  inner_join(., up, by = c("X4" = "row")) %>%
+  dplyr::select(-c(18:23)) %>%
+  mutate(DE = "yes")
+
+
+smg7_combined <- rbind(smg7_combined_de, smg7_combined_not_de)
+
+
+
+smg7_combined %>%
+  mutate(DE2 = case_when(DE == "yes" ~ "up in smg7",
+                          DE == "no" ~ "no difference")) %>%
+  ggplot(aes(x = new_distance)) +
+  # geom_histogram(aes(y=..density..), alpha=0.75, 
+  #                 position="identity", binwidth = 2,
+  #                 color = "black", fill = "white")+
+  geom_density(size = 1.5, n = 65536, bw = 10) +
+  #geom_density(size = 1.5,bw = 1, aes(color = genotype)) +
+  coord_cartesian(xlim = c(-150,150))+
+  scale_x_continuous(trans = "reverse") +
+  # geom_text(data = facet_label, aes(label = new_label, x = x, y = y),
+  #           hjust = 0, fontface=2, size = 4.5) +
+  ggsci::scale_color_npg(name = "smg7 DE?") +
+  # scale_y_log10()+
+  facet_grid(DE2~new_label) +
+  theme_classic(base_size = 12) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  ylab('Modification density') +
+  xlab("Nucleotides surrounding feature") +
+  theme(strip.background = element_blank(),
+        text = element_text(face = "bold"))
+
+
+```
+
+Finally, we need to determine the overlap of mRNAs predicted to be NMD sensitive vs PRM marked mRNAs in the Arabidopsis tissue expression atlas:
+
+start by loading in tissue expression atlas PRMs and associated TPM values
+
+This will generate
+
+# Supplemental Figure 10D
+
+```{r}
+link <- "https://figshare.com/ndownloader/files/45632223"
+
+download.file(link, "~/Downloads/at_expression_atlas_prms.txt.gz")
+
+library(data.table)
+
+
+modtect <- read_delim("~/Downloads/at_expression_atlas_prms.txt.gz",
+                 delim = "\t", col_names = T) %>%
+  as_tibble() %>%
+  separate(file,
+           into = c("SRA", "other"),
+           sep = "_") %>%
+  dplyr::select(-other) %>%
+  filter(depth >= 10)
+
+
+
+# download and load in sample metadata
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure2_files/at_expression_atlas_metadata.xlsx?raw=TRUE"
+
+download.file(link, "~/Downloads/at_expression_atlas_metadata.xlsx")
+
+library(readxl)
+metadata <- read_excel("~/Downloads/at_expression_atlas_metadata.xlsx")
+
+
+modtect <- modtect %>%
+  left_join(., metadata, by = c("SRA" = "Run"))
+
+# for sorghum, i kept mods that were present in at least 3 replicates across the whole dataset
+sites_to_keep <- modtect %>%
+  unite(col = "full_position", c(chrom:position2), remove = F, sep = "-") %>%
+  distinct(full_position, SRA) %>%
+  group_by(full_position) %>%
+  summarise(occurences_per_samples = n_distinct(SRA)) %>% 
+  filter(occurences_per_samples >= 3) %>%
+  distinct(full_position)
+
+
+modtect <- modtect %>%
+  unite(col = full_position, 1:3, remove = F, sep = "-") %>%
+  inner_join(., sites_to_keep, by = "full_position") %>%
+  distinct() 
+
+
+# 394519 rows to 53,939 rows
+modtect$gene <- gsub("gene:", "", modtect$gene)
+
+# download and read in TPM
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure2_files/at_tissue_expression_atlas_tpm.txt?raw=TRUE"
+download.file(link, "~/Downloads/at_expression_atlas_tpm.txt")
+
+tpm <- read.table("~/Downloads/at_expression_atlas_tpm.txt",
+                  sep = "\t", header = T)
+
+
+# get expressed genes
+expressed <- tpm %>%
+  pivot_longer(!gene) %>%
+  group_by(gene) %>%
+  summarise(max = max(value)) %>%
+  ungroup() %>%
+  filter(max >= 1) %>%
+  distinct(gene)
+
+# 27401  expressed genes
+
+
+# to do the overlap, predict NMD mRNA targets using the factR package
+library(factR)
+
+gtf <- importGTF("~/Downloads/araport.gtf.gz")
+
+nmd_predict <- predictNMD(gtf)
+nmd_genes <- nmd_predict %>%
+ dplyr::filter(is_NMD == T) %>%
+  left_join(., tx2gene, by = c("transcript" = "TXNAME")) %>%
+  distinct(GENEID)
+
+
+prm_genes <- modtect %>% distinct(gene)
+overlap <- list(`Mergner et al PRMs` = prm_genes$gene,
+                `Predicted NMD` = nmd_genes$GENEID)
+ggvenn(overlap)
+
+
+```
