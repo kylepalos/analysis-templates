@@ -1,0 +1,1101 @@
+---
+title: "Figure 3"
+author: "Kyle Palos"
+editor: visual
+output: 
+  github_document:
+    fig_width: 12
+    fig_height: 9
+    dev: jpeg
+---
+
+This script performs the analyses going into Figure 3 and associated supplement of the comparative PRM manuscript
+
+An important input for these analyses is the output of Bedtools closest using filtered PRM sites and a BED file of start codons, stop codons, and splice junctions (with both the 5' and 3' edge of the junction annotated)
+
+Specifically, these analyses focus on Sorghum seedling PRMs and their distance to relevant transcript features (i.e., those mentioned above).
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(scales)
+```
+
+Download the BEDTools closest output:
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/sorghum_mods_closest_feature.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/sorghum_closest.txt")
+
+closest <- read.table("~/Downloads/sorghum_closest.txt",
+                      header = F)
+```
+
+Get a transcript to gene mapping file
+
+Download GFF3 annotation for Sorghum from Ensembl plants and use GenomicFeatures to get the mapping file we need:
+
+```{r}
+link <- "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-58/gff3/sorghum_bicolor/Sorghum_bicolor.Sorghum_bicolor_NCBIv3.58.gff3.gz"
+
+download.file(link, "~/Downloads/sorghum_annotation.gff3.gz")
+
+library(GenomicFeatures)
+
+txdb <- makeTxDbFromGFF("~/Downloads/sorghum_annotation.gff3.gz")
+
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+```
+
+Perform some data wrangling to clean up the "closest" data frame for plotting and analysis.
+
+```{r}
+
+closest <- closest %>%
+  separate(V4, c("gene", "pred_mod"), sep = "-") %>%
+  left_join(., tx2gene, by = c("V9" = "TXNAME")) %>%
+  relocate(GENEID, .before = V9)
+
+closest$V10 <- fct_relevel(closest$V10, "start_codon", "5ej", "3ej", "stop_codon")
+
+closest2 <- closest %>%
+  filter(V10 != ".") %>%
+  filter(gene == GENEID) %>%
+  distinct() %>%
+  mutate(new_label = case_when(V10 == "stop_codon" ~ "Stop codon",
+                               V10 == "5ej" ~ "5' exon junction",
+                               V10 == "3ej" ~ "3' exon junction",
+                               V10 == "start_codon" ~ "Start codon")) 
+
+
+
+closest2$new_label <- as.factor(closest2$new_label)
+
+closest2$new_label <- fct_relevel(closest2$new_label, c(
+  "Start codon", "5' exon junction", "3' exon junction", "Stop codon"
+))
+
+```
+
+Load in isoform level TPM to remove isoforms not expressed
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/sorghum_transcript_tpm.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/sorghum_transcript_tpm.txt")
+
+tx_tpm <- read.table("~/Downloads/sorghum_transcript_tpm.txt",
+                     header = T, sep = "\t")
+
+tx_expressed <- tx_tpm %>%
+  rowwise() %>%
+  mutate(tpm_avg = mean(c(sorghum1, sorghum2))) %>%
+  filter(tpm_avg >= 1)
+
+# get other transcript information from the TXDB file:
+tx_info <- as.data.frame(transcripts(txdb, columns = "tx_name"))
+
+```
+
+Transcript strand has to be taken into account in the context of bedtools closest. Ideally, look in a genome browser to ensure that the genomic coordinate will be the correct positive or "negative" distance from the feature of interest
+
+```{r}
+# establish the strand of all transcripts and join it with the corresponding gene
+sb_strand <- tx_info %>%
+  dplyr::select(5,6) %>%
+  dplyr::rename(strand = 1, tx = 2) %>%
+  left_join(., tx2gene, by = c("tx" = "TXNAME"))
+
+
+# remove isoforms not expressed and add on the strand
+closest2 <- closest2 %>%
+  inner_join(., tx_expressed, by = c("V9" = "tx")) %>%
+  left_join(., sb_strand, by = c("V9" = "tx",
+                                 "GENEID")) %>%
+  na.omit()
+
+# manually specifying where some text is going to go in the figure
+facet_label <- closest2 %>%
+  distinct(new_label) %>%
+  mutate(x = -160,
+         y = .028)
+
+
+```
+
+Plot and make
+
+# Figure 3D:
+
+```{r}
+
+# write the mods that are close to junctions
+closest2 %>%
+  mutate(new_distance = case_when(strand == "-" ~ V11,
+                                  strand == "+" ~ -V11)) %>%
+  filter(V10 == "5ej" | V10 == "3ej") %>%
+  filter(abs(new_distance) <= 50) %>%
+  dplyr::select(1:4) %>%
+  write.table(.,
+              "~/Downloads/ej_mods.bed",
+              row.names = F, col.names = F, sep = "\t", quote = F)
+
+
+
+# For positive strand genes, flip the sign of the distance value to make it consistent
+closest2 %>%
+  mutate(new_distance = case_when(strand == "-" ~ V11,
+                                  strand == "+" ~ -V11)) %>%
+  ggplot(aes(x = new_distance)) +
+ geom_histogram(aes(y=..density..), alpha=0.75, 
+                position="identity", binwidth = 2,
+                color = "black", fill = "white")+
+ geom_density(size = .75, n = 65536, bw = 2) +
+  coord_cartesian(xlim = c(-150,150))+
+  scale_x_continuous(trans = "reverse",
+                     breaks = c(-100, 0, 100),
+                     labels = c("-100 (5')",
+                                "0",
+                                "100 (3')")) +
+  geom_text(data = facet_label, aes(label = new_label, x = x, y = y),
+            hjust = 0, fontface=2, size = 7) +
+ # scale_y_log10()+
+ facet_wrap(~ new_label, ncol = 1) +
+  theme_classic(base_size = 12) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  ylab('Modification density') +
+  xlab("Nucleotides surrounding feature") +
+  scale_y_continuous(breaks = c(0.00, 0.025),
+                     labels = c("0",".025")) +
+  theme(strip.text = element_blank(),
+        text = element_text(face = "bold"))
+
+
+```
+
+Next, to generate Figure 3E, we need to annotate which exons of a transcript are the first, last, internal, etc.
+
+Use the exons by function from GenomicFeatures to accomplish this
+
+This is actually partially encoded by the exon rank column but I did not utilize it previously.
+
+```{r}
+exons <- as.data.frame(exonsBy(txdb, by = "tx", use.names = T))
+
+pos <- exons %>%
+    filter(strand == "+") %>%
+  group_by(group_name) %>%
+  mutate(exon_n = row_number(),
+         total_exons = n()) %>%
+  ungroup() %>%
+  filter(total_exons >= 2) %>%
+  mutate(exon_position = case_when(exon_n == 1 ~ "first",
+                                   exon_n == total_exons ~ "last",
+                                   TRUE ~ "internal"))
+
+# for negative strand transcripts, it's a little different
+neg <- exons %>%
+  filter(strand == "-") %>%
+  group_by(group_name) %>%
+  arrange(desc(start), .by_group = T) %>%
+  ungroup() %>%
+  group_by(group_name) %>%
+  mutate(exon_n = row_number(),
+         total_exons = n()) %>%
+  ungroup() %>%
+  filter(total_exons >= 2) %>%
+  mutate(exon_position = case_when(exon_n == 1 ~ "first",
+                                   exon_n == total_exons ~ "last",
+                                   TRUE ~ "internal")) 
+    
+exons2 <- rbind(pos,neg)  
+```
+
+Additionally, you will need a bedtools intersection of RNA modifications against exons of all mRNAs
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/sorghum_mod_exon_intersect.txt?raw=TRUE"
+
+download.file(link, "~/Downloads/sorghum_mod_exon_intersection.txt")
+
+int <- read_delim("~/Downloads/sorghum_mod_exon_intersection.txt", 
+    delim = "\t", escape_double = FALSE, 
+    col_names = FALSE, trim_ws = TRUE)
+```
+
+clean up intersection file and add some additional labels to the "first, internal, and last" exon file, then join them together
+
+```{r}
+
+# establish a more specific "first internal" and "last internal" exon (i.e., the second exon and penultimate exon, respectively)
+
+exons3 <- exons2 %>%
+  left_join(., tx2gene, by = c("group_name" = "TXNAME")) %>%
+  distinct() %>%
+  dplyr::rename(chr = 3, start = 4, end = 5, exon_length = 6, strand = 7,
+         exon_number = 11, n_exons = 12, position = 13, gene = 14, tx = 2) %>%
+  filter(n_exons >= 3) %>%
+  mutate(position2 = case_when(exon_number == 2 ~ "first_internal",
+                               n_exons - exon_number == 1 ~ "last_internal",
+                               TRUE ~ position)) %>%
+  distinct()
+
+
+
+# load in TPM from figure 1
+sb_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_tpm.txt?raw=TRUE"
+
+# Download
+download.file(sb_tpm, destfile = "~/Downloads/sb_tpm.txt")
+
+
+sb_tpm <- read_delim("~/Downloads/sb_tpm.txt", delim = "\t", col_names = T)
+
+# retain expressed genes
+sb_expressed <- sb_tpm %>%
+  filter(tpm_avg >= 1) %>%
+  distinct(Gene)
+
+
+# only keep exons of expressed genes and compute the total amount of exonic space taken up by each exon type and proportionally how much space that is across all exons
+exon_summary <- exons3 %>%
+  inner_join(., sb_expressed, by = c("gene" = "Gene")) %>% # only assess expressed genes
+  group_by(position2) %>%
+  summarise(total_space = sum(exon_length)) %>%
+  ungroup() %>%
+  mutate(fractional_space = (total_space/sum(total_space)))
+
+
+
+# Now we clean up the BedTools intersect file
+int_clean <- int  %>%
+  dplyr::rename(chr = 1, start = 2, end = 3, gene_mod = 4, var_prop = 5, gene_chr = 6, gene_start = 7, gene_end = 8, gene = 9, score = 10, strand = 11, overlap = 12) %>%
+  separate(gene_mod, into = c("mod_gene", "mod"), sep = "-") %>%
+  left_join(., tx2gene, by = c("gene" = "TXNAME")) %>%
+  dplyr::rename(tx = gene,
+         gene = GENEID) %>%
+  relocate(gene, .before = tx) %>%
+  filter(mod_gene == gene) %>%
+  dplyr::select(-score, -overlap) %>%
+  dplyr::rename(exon_chr = gene_chr,
+         exon_start = gene_start,
+         exon_end = gene_end,
+         exon_gene = gene) %>%
+  unite("exon_tx", exon_gene:tx, sep = "-", remove = F)
+
+
+
+# Now, join together RNA modifications and only retain expressed isoforms
+join <- int_clean %>%
+  mutate(exon_start = exon_start + 1) %>% # account for off by one BED 0-based errors
+  left_join(., exons3, by = c("exon_chr" = "chr",
+                                "exon_start" = "start",
+                                "exon_end" = "end",
+                                "exon_gene" = "gene")) %>%
+  distinct(chr, start, end, mod, mod_gene, position2, exon_length, .keep_all = T) %>%
+  na.omit() %>%
+  inner_join(., tx_expressed, by = c("tx.x" = "tx"))
+```
+
+Ok, now we can finally make
+
+# Figure 3E
+
+For the first exon junction edge
+
+```{r}
+# get mods for first exon 3' edge
+# positive strand
+first_3edge_pos <- join %>%
+  filter(position2 == "first") %>%
+  filter(strand.x == "+") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_3ej = exon_end - start) 
+
+# negative strand
+first_3edge_neg <- join %>%
+  filter(position2 == "first") %>%
+  filter(strand.x == "-") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_3ej = start - exon_start) 
+
+
+first_3edge <- rbind(first_3edge_pos,
+                     first_3edge_neg)
+
+
+# now get mods for second exon 5' edge (first internal exon)
+# positive strand
+second_5edge_pos <- join %>%
+  filter(position2 == "first_internal") %>%
+  filter(strand.x == "+") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_5ej = start - exon_start) 
+
+# negative strand
+second_5edge_neg <- join %>%
+  filter(position2 == "first_internal") %>%
+  filter(strand.x == "-") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_5ej = exon_end - start) 
+
+second_5edge <- rbind(second_5edge_pos,
+                      second_5edge_neg)
+
+
+p1 <- first_3edge %>%
+  ggplot(aes(x = -distance_to_3ej)) +
+  geom_histogram(binwidth = 1, fill = "black") + coord_cartesian(xlim = c(-100,0),
+                                                 ylim = c(0,15)) +
+  xlab("") +
+  #ggtitle("Mod distribution in the FIRST exon approaching 3' edge",
+     #     subtitle = "Approaching first exon junction") +
+  theme_classic(base_size = 12) +
+  ylab("") +
+  scale_y_continuous(breaks = seq(0,15,5)) +
+  theme(text = element_text(face = "bold"))
+
+
+p2 <- second_5edge %>%
+  ggplot(aes(x = distance_to_5ej)) +
+  geom_histogram(binwidth = 1, fill = "black") + coord_cartesian(xlim = c(0,100),
+                                                 ylim = c(0,15)) +
+ xlab("") +
+ # ggtitle("Mod distribution in the Second exon approaching 5' edge",
+     #     subtitle = "Approaching first exon junction") +
+  theme_classic(base_size = 12) +
+  scale_y_continuous(position = "right",
+                     breaks = seq(0,15,5)) +
+  ylab("") +
+  theme(text = element_text(face = "bold"))
+```
+
+and for the last exon junction edge:
+
+```{r}
+# get mods for last internal exon 3' edge
+# positive strand
+last_internal_3edge_pos <- join %>%
+  filter(position2 == "last_internal") %>%
+  filter(strand.x == "+") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_3ej = exon_end - start) 
+
+# negative strand
+last_internal_3edge_neg <- join %>%
+  filter(position2 == "last_internal") %>%
+  filter(strand.x == "-") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_3ej = start - exon_start) 
+
+
+last_internal_3edge <- rbind(last_internal_3edge_pos,
+                     last_internal_3edge_neg)
+
+
+
+
+
+# now get mods for last exon 5' edge
+# positive strand
+last_5edge_pos <- join %>%
+  filter(position2 == "last") %>%
+  filter(strand.x == "+") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_5ej = start - exon_start) 
+
+# negative strand
+last_5edge_neg <- join %>%
+  filter(position2 == "last") %>%
+  filter(strand.x == "-") %>%
+  distinct(chr, start, end, position2, .keep_all = T) %>%
+  mutate(distance_to_5ej = exon_end - start) 
+
+last_5edge <- rbind(last_5edge_pos,
+                      last_5edge_neg)
+
+
+
+
+p3 <- last_internal_3edge %>%
+  ggplot(aes(x = -distance_to_3ej)) +
+  geom_histogram(binwidth = 1, fill = "black") + coord_cartesian(xlim = c(-100,0)) +
+  xlab("") +
+ # ggtitle("Mod distribution in the LAST INTERNAL exon approaching 3' edge",
+   #       subtitle = "Approaching last exon junction") +
+  theme_classic(base_size = 12) +
+  ylab("") +
+  theme(text = element_text(face = "bold"))
+
+
+p4 <- last_5edge  %>%
+  ggplot(aes(x = distance_to_5ej)) +
+  geom_histogram(binwidth = 1, fill = "black") + coord_cartesian(xlim = c(0,100)) +
+  xlab("") +
+ # ggtitle("Mod distribution in the LAST exon approaching 5' edge",
+    #      subtitle = "Approaching last exon junction") +
+  theme_classic(base_size = 12) +
+  scale_y_continuous(position = "right") +
+ ylab("") +
+  theme(text = element_text(face = "bold"))
+```
+
+Patch plots:
+
+```{r}
+library(patchwork)
+(p1+p2) / 
+  (p3+p4) 
+```
+
+Now, pivot for Figure 3A
+
+The input data for 3A is the output of DeepTools computeMatrix with a bed file of RNA modifications in each species, specifically the RNA modifications from Figure 1.
+
+This computeMatrix code would look like:
+
+The input bigWig file is generated from the bed file (bed -\> bedGraph -\> bigWig)
+
+```         
+computeMatrix scale-regions \
+-S setaria_mods_density.bw \
+-R ~/Desktop/Nelson_lab/epitranscriptomics/genome_files/setaria_gffread.gtf \
+--metagene -p 8 --averageTypeBins sum --missingDataAsZero --exonID CDS \
+-a 500 -b 500 -o setaria_metagene.tab.gz
+```
+
+Then, to get the data for R, you would do:
+
+```         
+plotProfile --matrixFile sorghum_metagene.tab.gz \
+--outFileName sorghum.svg \
+--outFileNameData sorghum_plot.tab \
+--startLabel start --endLabel end
+```
+
+The function for reading in this tab file and tidying it up for plotting comes from Jeff Grover:
+
+<https://groverj3.github.io/articles/2019-06-28_making-better-metaplots-with-ggplot-part-2.html>
+
+Read in the tab files for plotting
+
+```{r}
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/maize_plot.tab?raw=TRUE"
+
+download.file(link, "~/Downloads/maize_meta.txt")
+
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/setaria_plot.tab?raw=TRUE"
+
+download.file(link, "~/Downloads/setaria_meta.txt")
+
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure3_files/sorghum_plot.tab?raw=TRUE"
+
+download.file(link, "~/Downloads/sorghum_meta.txt")
+
+
+```
+
+Define the function by Jeff to read in the table and tidy it up for plotting:
+
+```{r}
+read_deeptools_table <- function(file) {
+  
+  n <- max(count.fields(file, sep = '\t'), na.rm = TRUE)
+  x <- readLines(file)
+  
+  .splitvar <- function(x, sep, n) {
+    var <- unlist(strsplit(x, split = sep))
+    length(var) <- n
+    return(var)
+  }
+  
+  x <- do.call(cbind, lapply(x, .splitvar, sep = '\t', n = n))
+  x <- apply(x, 1, paste, collapse = '\t')
+  plot_table <- na.omit(read.csv(text = x, sep = '\t')[-1,])  # Remove first row with "gene" label
+  
+  return(plot_table)
+}
+```
+
+Read them in now:
+
+```{r}
+maize <- read_deeptools_table('~/Downloads/maize_meta.txt')
+
+maize_long <- gather(maize, 'sample', 'score', -bin.labels, -bins)
+
+maize_long$bin.labels <- gsub("start", "start codon", maize_long$bin.labels)
+maize_long$bin.labels <- gsub("end", "stop codon", maize_long$bin.labels)
+
+
+setaria <- read_deeptools_table('~/Downloads/setaria_meta.txt')
+
+setaria_long <- gather(setaria, 'sample', 'score', -bin.labels, -bins)
+
+setaria_long$bin.labels <- gsub("start", "start codon", setaria_long$bin.labels)
+setaria_long$bin.labels <- gsub("end", "stop codon", setaria_long$bin.labels)
+
+
+sorghum <- read_deeptools_table('~/Downloads/sorghum_meta.txt')
+
+sorghum_long <- gather(sorghum, 'sample', 'score', -bin.labels, -bins)
+
+sorghum_long$bin.labels <- gsub("start", "start codon", sorghum_long$bin.labels)
+sorghum_long$bin.labels <- gsub("end", "stop codon", sorghum_long$bin.labels)
+```
+
+And generate a combine plot to make:
+
+# Figure 3A:
+
+```{r}
+# make a combined plot
+zm <- maize_long %>%
+  dplyr::rename(maize = 4)
+
+sb <- sorghum_long %>%
+  dplyr::rename(sorghum = 4) %>%
+  dplyr::select(4)
+
+si <- setaria_long %>%
+  dplyr::rename(setaria = 4) %>%
+  dplyr::select(4)
+
+
+combined <- cbind(zm,sb,si)
+
+combined <- combined %>%
+  dplyr::select(-sample) %>%
+  pivot_longer(!c(bin.labels, bins)) 
+
+ggplot(combined, aes(x = bins, y = as.numeric(value), color = name)) +
+  geom_smooth(method = 'loess',
+              span = .2,
+              se = FALSE, linewidth = 2.8) +
+   ggsci::scale_color_npg() +
+  scale_x_continuous(breaks = combined$bins,
+                     labels = combined$bin.labels) +
+  # geom_vline(xintercept = c(start_bin, end_bin), linetype = 'dotted') +
+  ylab('Modification density') +
+  xlab('Position') +
+  theme_classic(12) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom',
+        text = element_text(face = "bold"),
+        legend.direction = 'horizontal',
+        legend.margin = margin(0,0,0,0),
+        legend.box.margin = margin(-10,-10,-10,-10),
+      #  axis.text = element_text(color = 'black'),
+        axis.ticks.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = c(50, 150), linetype = 'dotted') 
+```
+
+On to the next bit.
+
+# Figure 3B
+
+Exon length of modified exons vs not modified exons:
+
+```{r}
+# gather all expressed exons
+expressed_tx_ids <- tx_expressed %>% distinct(tx)
+
+expressed_tx_exons <- exons %>%
+  inner_join(., expressed_tx_ids, by = c("group_name" = "tx"))
+
+expressed_tx_exons$seqnames <- gsub("super_", "super-", expressed_tx_exons$seqnames)
+
+
+expressed_tx_exons <- expressed_tx_exons %>%
+  unite("full_position", 3:5, sep = "_") %>%
+  distinct()
+
+
+# now gather all modified exons
+# This join comes from the analyses for Figure 3E
+modified_exons <- join %>%
+  unite("full_position", exon_chr:exon_end, sep = "_") %>%
+  dplyr::select(full_position, exon_length) %>%
+  distinct() %>%
+  mutate(type = "modified")
+
+not_modified_exons <- anti_join(expressed_tx_exons,
+                                modified_exons, by = "full_position") %>%
+  dplyr::select(full_position, width) %>%
+  dplyr::rename(exon_length = 2) %>%
+  mutate(type = "not_modified") 
+
+
+mod_vs_not <- rbind(not_modified_exons,
+               modified_exons)
+
+mod_vs_not %>%
+  group_by(type) %>%
+  summarise(med = median(exon_length),
+            n = n())
+
+median(mod_vs_not$exon_length)
+
+mod_vs_not %>%
+  ggplot(aes(x = exon_length, fill = type)) +
+  geom_density(linewidth = 1.5, alpha = .75, color = NA) +
+  ggsci::scale_color_npg(guide = "none") +
+  ggsci::scale_fill_npg(labels = c("modified",
+                                   "not modified"), name = "class")+
+  # scale_fill_manual(values = c("blue", "red"), labels =
+  #                     c("modified", "not modified")) +
+    #scale_color_manual(values = c("blue", "red"), guide = "none") +
+ coord_cartesian(xlim = c(1,10000)) +
+  theme_classic(base_size = 12) +
+ scale_x_log10() +
+  xlab("Exon length (nt)") +
+  theme(text = element_text(face = "bold"))
+
+```
+
+Onto the last figure of Figure 3, 3F
+
+This one assesses the number of isoforms expressed from each gene in the Sorghum McCormick et al tissue expression atlas:
+
+This code is from the figure 2 script to load in the McCormick et al mods
+
+```{r}
+link <- "https://figshare.com/ndownloader/files/45866739"
+
+download.file(link, destfile = "~/Downloads/sorghum_tissue_expression_atlas.txt.gz")
+
+
+mods <- fread("~/Downloads/sorghum_tissue_expression_atlas.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() 
+
+# and load in this expression atlas TPM and isoforms TPM files
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure2_files/sorghum_expression_atlas_tpm.txt.gz?raw=TRUE"
+download.file(link, destfile = "~/Downloads/sorghum_tissue_expression_atlas_tpm.txt.gz")
+
+tpm <- read.table("~/Downloads/sorghum_tissue_expression_atlas_tpm.txt.gz", header = T, sep = "\t")
+
+
+# transcript TPM
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure2_files/sorghum_expression_atlas_transcript_tpm.txt.gz?raw=TRUE"
+download.file(link, destfile = "~/Downloads/sorghum_tissue_expression_atlas_tx_tpm.txt.gz")
+
+tx_tpm <- read.table("~/Downloads/sorghum_tissue_expression_atlas_tx_tpm.txt.gz", header = T, sep = "\t")
+
+```
+
+clean this mod data frame up:
+
+This includes:
+
+Only keeping modifications present in at least 3 replicates and
+
+Removing lncRNA mods that are present on the antisense strand of a protein-coding gene. These mods are difficult to infer strand for. There are intergenic lncRNAs as well. These we will keep.
+
+```{r}
+three_reps <- mods %>%
+  dplyr::select(full_position, file) %>%
+  distinct() %>%
+  group_by(full_position) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(n > 2) %>%
+  distinct(full_position)
+
+mods <- mods %>%
+  inner_join(., three_reps, by = "full_position")
+
+
+
+
+lnc_mods <- mods %>%
+  filter(type == "lincRNA" |
+           type == "antisense_lncRNA")
+
+native_mods <- mods %>%
+  filter(type != "lincRNA" &
+           type != "antisense_lncRNA")
+
+
+# These next 2 steps remove modified sites that are shared between the 2 datasets. It's more likely the mods are occurring on mRNAs and not antisense lncRNAs due to expression differences
+native_mod_sites <- native_mods %>%
+  distinct(full_position)
+
+lnc_mods <- lnc_mods %>%
+  anti_join(., native_mod_sites, by = "full_position")
+
+
+mods <- rbind(native_mods, lnc_mods)
+```
+
+Ok, the next thing to do is establish the number of isoforms expressed per gene ID, and only analyze the "control" conditions in the McCormick expression atlas
+
+They also performed stress experiments, we'll remove those for this analysis
+
+```{r}
+# I don't think this step is needed but it's a genomicFeatures command to get transcript information for each gene and isoform
+sb_summary <- transcriptLengths(txdb, with.cds_len=T,
+                                with.utr5_len=T, with.utr3_len=T)
+
+
+sb_gene_sum <- sb_summary %>%
+  group_by(gene_id) %>%
+  summarise(n_exon = mean(nexon),
+            tx_length = mean(tx_len),
+            cds_length = mean(cds_len),
+            utr5_length = mean(utr5_len),
+            utr3_length = mean(utr3_len))
+
+
+# try to add the following information to the mods DF
+# all the summary information in the gene sum DF above (easy)
+# how many isoforms are expressed for each SRA
+
+tx_tpm$tx <- gsub("transcript:", "", tx_tpm$tx)
+
+# this group_by/summarise counts the number of isoforms with at least .1 TPM and sums that up across all the input experiments to the expression atlas
+
+# the sterss experiments have not been removed yet
+gene_n_isoforms_expressed <- tx_tpm %>%
+  pivot_longer(!tx) %>%
+  left_join(., tx2gene, by = c("tx" = "TXNAME")) %>%
+  group_by(GENEID, name) %>%
+  summarise(n_expressed_isoforms = sum(value > .1)) %>%
+  ungroup()
+
+
+mods <- mods %>%
+  left_join(., gene_n_isoforms_expressed, by = c("gene" = "GENEID",
+                                                 "file" = "name")) %>%
+  left_join(., sb_gene_sum, by = c("gene" = "gene_id"))
+
+# load in the rna-seq metadata that has the broader tissue
+link <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure2_files/mccormick_rnaseq_metadata.xlsx?raw=TRUE"
+download.file(link, "~/Downloads/sorghum_atlas_metadata.xlsx")
+
+library(readxl)
+metadata <- read_excel("~/Downloads/sorghum_atlas_metadata.xlsx")
+
+metadata <- metadata %>%
+  dplyr::select(3,5,9) %>%
+  dplyr::rename(file = 1, stage = 2)
+
+mods <- mods %>%
+  left_join(., metadata, by = "file")
+
+
+# split out stress mods vs tissue mods
+# the "control" or "stress" is separated from the tissue by an underscore
+stress_mods <- mods %>%
+  filter(grepl("_", tissue))
+  
+mods <- mods %>%
+  filter(!grepl("_", tissue))
+```
+
+This next block will generate the input data for plotting. Essentially establishing a variable for modded or not, and number of isoforms expressed in each SRA
+
+```{r}
+# let's look at number of isoforms expressed vs modified or not
+# x-axis number of isoforms expressed
+# y-axis number % of group that is modified
+
+modified_genes <- mods %>%
+  dplyr::select(gene, file, type) %>%
+  distinct() %>%
+  mutate(modified = "yes")
+  
+  
+tissue_exps <- metadata %>%
+    filter(!grepl("_", tissue)) %>%
+  distinct(file)
+
+library(dtplyr)
+tx_tpm_dt <- lazy_dt(tx_tpm)
+# 
+# isoform_modified <- tx_tpm_dt %>%
+#   pivot_longer(!tx) %>%
+#   group_by(tx) %>%
+#   mutate(max = max(value)) %>%
+#   ungroup() %>%
+#   filter(max >= .1) %>%
+#   dplyr::select(-max) %>%
+#   inner_join(., tissue_exps, by = c("name" = "file")) %>%
+#   left_join(., tx2gene, by = c("tx" = "TXNAME")) %>%
+#   left_join(., modified_genes, by = c("GENEID" = "gene",
+#                                       "name" = "file")) %>%
+#   mutate(is_modified = case_when(is.na(modified) ~ "no",
+#                                  !is.na(modified) ~ "yes")) %>%
+#   group_by(GENEID, name) %>%
+#   mutate(n_expressed_isoforms = sum(tpm >= .1)) %>%
+#   ungroup() %>%
+#   filter(n_expressed_isoforms != 0) %>%
+#   as_tibble()
+
+  
+```
+
+# Figure 3C
+
+A lot of this is going to come from Figure 1 to download all the HAMR/ModTect files and identify common sites
+
+That will be the first code block, the second will do the isoform analysis:
+
+```{r}
+# establish URLs
+sb_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_hamr_clean.txt.gz?raw=TRUE"
+sb_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_hamr_clean.txt.gz?raw=TRUE"
+sb_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_modtect_clean.txt.gz?raw=TRUE"
+sb_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped file
+download.file(sb_h1, destfile = "~/Downloads/sbh1.txt.gz")
+download.file(sb_h2, destfile = "~/Downloads/sbh2.txt.gz")
+download.file(sb_m1, destfile = "~/Downloads/sbm1.txt.gz")
+download.file(sb_m2, destfile = "~/Downloads/sbm2.txt.gz")
+
+# Read the gzipped file into R
+sb_h1 <- fread("~/Downloads/sbh1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "sb_h1")
+
+sb_h2 <- fread("~/Downloads/sbh2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "sb_h2")
+
+sb_m1 <- fread("~/Downloads/sbm1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "sb_m1")
+
+sb_m2 <- fread("~/Downloads/sbm2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "sb_m2")
+
+
+zm_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_hamr_clean.txt.gz?raw=TRUE"
+zm_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_hamr_clean.txt.gz?raw=TRUE"
+zm_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_modtect_clean.txt.gz?raw=TRUE"
+zm_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped files
+download.file(zm_h1, destfile = "~/Downloads/zmh1.txt.gz")
+download.file(zm_h2, destfile = "~/Downloads/zmh2.txt.gz")
+download.file(zm_m1, destfile = "~/Downloads/zmm1.txt.gz")
+download.file(zm_m2, destfile = "~/Downloads/zmm2.txt.gz")
+
+# Use fread from data.table to read in
+# do some  cleaning
+zm_h1 <- fread("~/Downloads/zmh1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "zm_h1")
+
+zm_h2 <- fread("~/Downloads/zmh2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "zm_h2")
+
+zm_m1 <- fread("~/Downloads/zmm1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "zm_m1")
+
+zm_m2 <- fread("~/Downloads/zmm2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "zm_m2")
+
+
+si_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_hamr_clean.txt.gz?raw=TRUE"
+si_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_hamr_clean.txt.gz?raw=TRUE"
+si_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_modtect_clean.txt.gz?raw=TRUE"
+si_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped files
+download.file(si_h1, destfile = "~/Downloads/sih1.txt.gz")
+download.file(si_h2, destfile = "~/Downloads/sih2.txt.gz")
+download.file(si_m1, destfile = "~/Downloads/sim1.txt.gz")
+download.file(si_m2, destfile = "~/Downloads/sim2.txt.gz")
+
+# Use fread from data.table to read in
+# do some  cleaning
+si_h1 <- fread("~/Downloads/sih1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "si_h1")
+
+si_h2 <- fread("~/Downloads/sih2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v18:v20)) %>% dplyr::rename(gene = v21) %>% mutate(experiment = "si_h2")
+
+si_m1 <- fread("~/Downloads/sim1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "si_m1")
+
+si_m2 <- fread("~/Downloads/sim2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% dplyr::select(-c(v34:v36)) %>% dplyr::rename(gene = v37) %>% mutate(experiment = "si_m2")
+
+# make a new column to specify the site location in the chromosome
+sb_h1 <- sb_h1 %>% unite(col = full_position, 1:3, remove = F)
+sb_h2 <- sb_h2 %>% unite(col = full_position, 1:3, remove = F)
+sb_m1 <- sb_m1 %>% unite(col = full_position, 1:3, remove = F)
+sb_m2 <- sb_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+
+# this bit finds the shared elements between all those unique modified sites
+common_elements <- Reduce(intersect, c(sb_h1[, 1], sb_h2[, 1], sb_m1[, 1], sb_m2[,1])) %>%
+  as.data.frame() %>%
+  dplyr::rename(full_position = 1)
+
+# only retain the common sites in these dataframes
+sb_h1_common <- inner_join(common_elements, sb_h1, by = "full_position")
+sb_h2_common <- inner_join(common_elements, sb_h2, by = "full_position")
+sb_m1_common <- inner_join(common_elements, sb_m1, by = "full_position")
+sb_m2_common <- inner_join(common_elements, sb_m2, by = "full_position")
+
+common_sorghum_genes <- as.data.frame(sb_h1_common$gene) %>% distinct() %>%
+  dplyr::rename(gene = 1)
+
+# maize
+zm_h1 <- zm_h1 %>% unite(col = full_position, 1:3, remove = F)
+zm_h2 <- zm_h2 %>% unite(col = full_position, 1:3, remove = F)
+zm_m1 <- zm_m1 %>% unite(col = full_position, 1:3, remove = F)
+zm_m2 <- zm_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+
+common_elements <- Reduce(intersect, c(zm_h1[, 1], zm_h2[, 1], zm_m1[, 1], zm_m2[,1])) %>%
+  as.data.frame() %>%
+  dplyr::rename(full_position = 1)
+
+zm_h1_common <- inner_join(common_elements, zm_h1, by = "full_position")
+zm_h2_common <- inner_join(common_elements, zm_h2, by = "full_position")
+zm_m1_common <- inner_join(common_elements, zm_m1, by = "full_position")
+zm_m2_common <- inner_join(common_elements, zm_m2, by = "full_position")
+
+# what are the commonly modified genes?
+common_maize_genes <- as.data.frame(zm_h1_common$gene) %>% distinct() %>%
+  dplyr::rename(gene = 1)
+
+# setaria
+si_h1 <- si_h1 %>% unite(col = full_position, 1:3, remove = F)
+si_h2 <- si_h2 %>% unite(col = full_position, 1:3, remove = F)
+si_m1 <- si_m1 %>% unite(col = full_position, 1:3, remove = F)
+si_m2 <- si_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+common_elements <- Reduce(intersect, c(si_h1[, 1], si_h2[, 1], si_m1[, 1], si_m2[,1])) %>%
+  as.data.frame() %>%
+  dplyr::rename(full_position = 1)
+
+si_h1_common <- inner_join(common_elements, si_h1, by = "full_position")
+si_h2_common <- inner_join(common_elements, si_h2, by = "full_position")
+si_m1_common <- inner_join(common_elements, si_m1, by = "full_position")
+si_m2_common <- inner_join(common_elements, si_m2, by = "full_position")
+
+common_setaria_genes <- as.data.frame(si_h1_common$gene) %>% distinct() %>%
+  dplyr::rename(gene = 1)
+
+# load in genome annotations:
+sb_txdb <- "https://figshare.com/ndownloader/files/48356257"
+si_txdb <- "https://figshare.com/ndownloader/files/48356254"
+zm_txdb <- "https://figshare.com/ndownloader/files/48356260"
+download.file(sb_txdb, destfile = "~/Downloads/sb_txdb.gff3")
+download.file(si_txdb, destfile = "~/Downloads/si_txdb.gff3")
+download.file(zm_txdb, destfile = "~/Downloads/zm_txdb.gff3")
+library(GenomicFeatures)
+sb_txdb <- makeTxDbFromGFF("~/Downloads/sb_txdb.gff3")
+si_txdb <- makeTxDbFromGFF("~/Downloads/si_txdb.gff3")
+zm_txdb <- makeTxDbFromGFF("~/Downloads/zm_txdb.gff3")
+
+# load in TPM
+sb_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_tpm.txt?raw=TRUE"
+download.file(sb_tpm, destfile = "~/Downloads/sb_tpm.txt")
+sb_tpm <- read_delim("~/Downloads/sb_tpm.txt", delim = "\t", col_names = T)
+
+zm_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/maize_tpm.txt?raw=TRUE"
+download.file(zm_tpm, destfile = "~/Downloads/zm_tpm.txt")
+zm_tpm <- read_delim("~/Downloads/zm_tpm.txt", delim = "\t", col_names = T)
+
+si_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/setaria_tpm.txt?raw=TRUE"
+download.file(si_tpm, destfile = "~/Downloads/si_tpm.txt")
+si_tpm <- read_delim("~/Downloads/si_tpm.txt", delim = "\t", col_names = T)
+```
+
+code for processing and plotting 3C
+
+```{r}
+sb <- transcriptLengths(sb_txdb) %>%
+  group_by(gene_id) %>% summarise(n_exon = mean(nexon), mean_len = mean(tx_len)) %>% ungroup()
+zm <- transcriptLengths(zm_txdb) %>%
+  group_by(gene_id) %>% summarise(n_exon = mean(nexon), mean_len = mean(tx_len)) %>% ungroup()
+si <- transcriptLengths(si_txdb) %>%
+  group_by(gene_id) %>% summarise(n_exon = mean(nexon), mean_len = mean(tx_len)) %>% ungroup()
+
+sb <- sb %>%
+  mutate(exon = case_when(n_exon == 1 ~ "mono-exonic",
+                           n_exon > 1 ~ "multi-exonic"))
+
+zm <- zm %>%
+  mutate(exon = case_when(n_exon == 1 ~ "mono-exonic",
+                          n_exon > 1 ~ "multi-exonic"))
+
+si <- si %>%
+  mutate(exon = case_when(n_exon == 1 ~ "mono-exonic",
+                          n_exon > 1 ~ "multi-exonic"))
+
+
+sb_mods <- sb_h1_common %>%
+  distinct(full_position, gene) %>%
+  group_by(gene) %>%
+  summarise(n_mods = n_distinct(full_position)) %>%
+  ungroup() %>%
+  left_join(sb, ., by = c("gene_id" = "gene")) %>%
+  mutate(n_mods = case_when(is.na(n_mods) ~ 0,
+                            !is.na(n_mods) ~ n_mods))
+  
+
+zm_mods <- zm_h1_common %>%
+  distinct(full_position, gene) %>%
+  group_by(gene) %>%
+  summarise(n_mods = n_distinct(full_position)) %>%
+  ungroup() %>%
+  left_join(zm, ., by = c("gene_id" = "gene")) %>%
+  mutate(n_mods = case_when(is.na(n_mods) ~ 0,
+                            !is.na(n_mods) ~ n_mods))
+
+si_mods <- si_h1_common %>%
+  distinct(full_position, gene) %>%
+  group_by(gene) %>%
+  summarise(n_mods = n_distinct(full_position)) %>%
+  ungroup() %>%
+  left_join(si, ., by = c("gene_id" = "gene")) %>%
+  mutate(n_mods = case_when(is.na(n_mods) ~ 0,
+                            !is.na(n_mods) ~ n_mods))
+
+
+
+sb_tpm %>%
+  filter(tpm_avg >= 1) %>%
+  distinct(Gene) -> sb_tpm
+
+
+zm_tpm <- zm_tpm %>%
+  dplyr::filter(tpm_avg >= 1) %>%
+  distinct(Gene)
+
+
+si_tpm <- si_tpm %>%
+  dplyr::filter(tpm_avg >= 1) %>%
+  distinct(Gene)
+
+sb_mods <- sb_mods %>%
+  inner_join(., sb_tpm, by = c("gene_id" = "Gene")) %>%
+  mutate(modified = case_when(n_mods == 0 ~ "not_modified",
+                              n_mods > 0 ~ "modified"),
+         species = "Sorghum")
+
+zm_mods <- zm_mods %>%
+  inner_join(., zm_tpm, by = c("gene_id" = "Gene")) %>%
+  mutate(modified = case_when(n_mods == 0 ~ "not_modified",
+                              n_mods > 0 ~ "modified"),
+         species = "Maize")
+
+si_mods <- si_mods %>%
+  inner_join(., si_tpm, by = c("gene_id" = "Gene")) %>%
+  mutate(modified = case_when(n_mods == 0 ~ "not_modified",
+                              n_mods > 0 ~ "modified"),
+         species = "Setaria")
+
+
+combined <- rbind(sb_mods,
+                  zm_mods,
+                  si_mods)
+
+
+combined %>%
+  group_by(species, exon) %>%
+  summarise(n_modified = sum(n_mods > 0),
+            n_unmodified = sum(n_mods == 0)) %>%
+  ungroup() %>%
+  mutate(proportion_modified = n_modified / (n_modified + n_unmodified)) %>%
+  ggplot(aes(x = species, y = 100*(proportion_modified), fill = exon)) +
+  geom_bar(stat = "identity", position=position_dodge()) +
+  ggsci::scale_fill_npg(name = "") +
+  theme_classic(base_size = 12) +
+  ylab("Proportion of expressed\ngenes modified") +
+  xlab("") +
+  theme(text = element_text(face = "bold"))
+```
