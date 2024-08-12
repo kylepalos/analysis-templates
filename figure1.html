@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kyle Palos">
+
+<title>Figure1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="figure1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="figure1_files/libs/quarto-html/quarto.js"></script>
+<script src="figure1_files/libs/quarto-html/popper.min.js"></script>
+<script src="figure1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="figure1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="figure1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="figure1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="figure1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="figure1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="figure1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Figure1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kyle Palos </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This script performs the analyses going into Figure 1 and associated supplement of the comparative RNA modification manuscript</p>
+<section id="load-packages" class="level3">
+<h3 class="anchored" data-anchor-id="load-packages">Load packages:</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'data.table'
+
+The following objects are masked from 'package:lubridate':
+
+    hour, isoweek, mday, minute, month, quarter, second, wday, week,
+    yday, year
+
+The following objects are masked from 'package:dplyr':
+
+    between, first, last
+
+The following object is masked from 'package:purrr':
+
+    transpose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsci)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpointdensity)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'
+
+The following object is masked from 'package:purrr':
+
+    discard
+
+The following object is masked from 'package:readr':
+
+    col_factor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: viridisLite
+
+Attaching package: 'viridis'
+
+The following object is masked from 'package:scales':
+
+    viridis_pal</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ComplexHeatmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: grid
+========================================
+ComplexHeatmap version 2.20.0
+Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
+Github page: https://github.com/jokergoo/ComplexHeatmap
+Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
+
+If you use it in published research, please cite either one:
+- Gu, Z. Complex Heatmap Visualization. iMeta 2022.
+- Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
+    genomic data. Bioinformatics 2016.
+
+
+The new InteractiveComplexHeatmap package can directly export static 
+complex heatmaps into an interactive Shiny app with zero effort. Have a try!
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(ComplexHeatmap))
+========================================</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ComplexUpset)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(circlize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>========================================
+circlize version 0.4.16
+CRAN page: https://cran.r-project.org/package=circlize
+Github page: https://github.com/jokergoo/circlize
+Documentation: https://jokergoo.github.io/circlize_book/book/
+
+If you use it in published research, please cite:
+Gu, Z. circlize implements and enhances circular visualization
+  in R. Bioinformatics 2014.
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(circlize))
+========================================</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggvenn)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-in-files-from-github" class="level2">
+<h2 class="anchored" data-anchor-id="load-in-files-from-github">Load in files from GitHub</h2>
+<p>This block is for Sorghum:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish URLs</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sb_h1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sb_h2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>sb_m1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>sb_m2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the gzipped file</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_h1, <span class="at">destfile =</span> <span class="st">"~/Downloads/sbh1.txt.gz"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_h2, <span class="at">destfile =</span> <span class="st">"~/Downloads/sbh2.txt.gz"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_m1, <span class="at">destfile =</span> <span class="st">"~/Downloads/sbm1.txt.gz"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_m2, <span class="at">destfile =</span> <span class="st">"~/Downloads/sbm2.txt.gz"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the gzipped file into R</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>sb_h1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sbh1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"sb_h1"</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>sb_h2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sbh2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"sb_h2"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>sb_m1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sbm1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"sb_m1"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>sb_m2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sbm2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"sb_m2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This block is for maize:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish URLs</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>zm_h1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>zm_h2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>zm_m1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>zm_m2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the gzipped files</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_h1, <span class="at">destfile =</span> <span class="st">"~/Downloads/zmh1.txt.gz"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_h2, <span class="at">destfile =</span> <span class="st">"~/Downloads/zmh2.txt.gz"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_m1, <span class="at">destfile =</span> <span class="st">"~/Downloads/zmm1.txt.gz"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_m2, <span class="at">destfile =</span> <span class="st">"~/Downloads/zmm2.txt.gz"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Use fread from data.table to read in</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># do some  cleaning</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>zm_h1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/zmh1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"zm_h1"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>zm_h2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/zmh2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"zm_h2"</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>zm_m1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/zmm1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"zm_m1"</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>zm_m2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/zmm2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"zm_m2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Setaria:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish URLs</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>si_h1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>si_h2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_hamr_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>si_m1 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>si_m2 <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_modtect_clean.txt.gz?raw=TRUE"</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the gzipped files</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_h1, <span class="at">destfile =</span> <span class="st">"~/Downloads/sih1.txt.gz"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_h2, <span class="at">destfile =</span> <span class="st">"~/Downloads/sih2.txt.gz"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_m1, <span class="at">destfile =</span> <span class="st">"~/Downloads/sim1.txt.gz"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_m2, <span class="at">destfile =</span> <span class="st">"~/Downloads/sim2.txt.gz"</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Use fread from data.table to read in</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># do some  cleaning</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>si_h1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sih1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"si_h1"</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>si_h2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sih2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v18<span class="sc">:</span>v20)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v21) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"si_h2"</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>si_m1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sim1.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"si_m1"</span>)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>si_m2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"~/Downloads/sim2.txt.gz"</span>, <span class="at">fill =</span> T, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>,<span class="cn">NA</span>), <span class="at">stringsAsFactors =</span> F) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(v34<span class="sc">:</span>v36)) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">gene =</span> v37) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">experiment =</span> <span class="st">"si_m2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="retain-sites-that-are-found-in-both-algorithms-and-in-both-replicates" class="level3">
+<h3 class="anchored" data-anchor-id="retain-sites-that-are-found-in-both-algorithms-and-in-both-replicates">Retain sites that are found in both algorithms and in both replicates</h3>
+<p>Generate a unique identifier for each PRM by combining the chromosome, start, and end</p>
+<p>Find the unique elements, inspired from this <a href="#%20https://stackoverflow.com/questions/49287337/how-to-select-common-values-in-multiple-data-frames-in-r">post</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a new column to specify the site location in the chromosome</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>sb_h1 <span class="ot">&lt;-</span> sb_h1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>sb_h2 <span class="ot">&lt;-</span> sb_h2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>sb_m1 <span class="ot">&lt;-</span> sb_m1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>sb_m2 <span class="ot">&lt;-</span> sb_m2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># this bit finds the shared elements between all those unique modified sites</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>common_elements <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(intersect, <span class="fu">list</span>(sb_h1[, <span class="dv">1</span>], sb_h2[, <span class="dv">1</span>], sb_m1[, <span class="dv">1</span>], sb_m2[,<span class="dv">1</span>]))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># only retain the common sites in these dataframes</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>sb_h1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, sb_h1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>sb_h2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, sb_h2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>sb_m1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, sb_m1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>sb_m2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, sb_m2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>common_sorghum_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sb_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Do the same for maize and Setaria:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># maize</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>zm_h1 <span class="ot">&lt;-</span> zm_h1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>zm_h2 <span class="ot">&lt;-</span> zm_h2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>zm_m1 <span class="ot">&lt;-</span> zm_m1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>zm_m2 <span class="ot">&lt;-</span> zm_m2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>common_elements <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(intersect, <span class="fu">list</span>(zm_h1[, <span class="dv">1</span>], zm_h2[, <span class="dv">1</span>], zm_m1[, <span class="dv">1</span>], zm_m2[,<span class="dv">1</span>]))</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>zm_h1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, zm_h1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>zm_h2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, zm_h2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>zm_m1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, zm_m1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>zm_m2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, zm_m2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co"># what are the commonly modified genes?</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>common_maize_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(zm_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># setaria</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>si_h1 <span class="ot">&lt;-</span> si_h1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>si_h2 <span class="ot">&lt;-</span> si_h2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>si_m1 <span class="ot">&lt;-</span> si_m1 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>si_m2 <span class="ot">&lt;-</span> si_m2 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> full_position, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">remove =</span> F)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>common_elements <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(intersect, <span class="fu">list</span>(si_h1[, <span class="dv">1</span>], si_h2[, <span class="dv">1</span>], si_m1[, <span class="dv">1</span>], si_m2[,<span class="dv">1</span>]))</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>si_h1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, si_h1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>si_h2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, si_h2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>si_m1_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, si_m1, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>si_m2_common <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(common_elements, si_m2, <span class="at">by =</span> <span class="st">"full_position"</span>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>common_setaria_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(si_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="visualize-overlap-of-prms-and-modified-mrnas-based-on-repiclates-and-algorithms" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-overlap-of-prms-and-modified-mrnas-based-on-repiclates-and-algorithms">Visualize overlap of PRMs and modified mRNAs based on repiclates and algorithms</h2>
+<p>Do it for Sorghum, that’s:</p>
+</section>
+<section id="figure-1b" class="level1">
+<h1>Figure 1B</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sb_sites <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">HAMR1 =</span> sb_h1<span class="sc">$</span>full_position,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">HAMR2 =</span> sb_h2<span class="sc">$</span>full_position,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">MT1 =</span> sb_m1<span class="sc">$</span>full_position,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">MT2 =</span> sb_m2<span class="sc">$</span>full_position)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(sb_sites, <span class="at">text_size =</span> <span class="dv">12</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">show_percentage =</span> F)            </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplotify)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>venn <span class="ot">&lt;-</span> <span class="fu">as.ggplot</span>(<span class="fu">ggvenn</span>(sb_sites, <span class="at">text_size =</span> <span class="dv">12</span>,,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">show_percentage =</span> F,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fill_color =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"bisque2"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"red2"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"burlywood"</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">set_name_size =</span> <span class="dv">8</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>venn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Visualize enriched GO terms of PRM marked mRNAs</p>
+<p>GO terms mapped to genes acquired from Ensembl Plants Biomart</p>
+<p>Background gene list for go terms is all expressed genes (TPM &gt;= 1)</p>
+</section>
+<section id="figure-1d" class="level1">
+<h1>Figure 1D</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in sorghum tpm and go terms</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sb_tpm <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_tpm.txt?raw=TRUE"</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Download</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_tpm, <span class="at">destfile =</span> <span class="st">"~/Downloads/sb_tpm.txt"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># read</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>sb_tpm <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/sb_tpm.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 34779 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (1): Gene
+dbl (1): tpm_avg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sb_tpm <span class="ot">&lt;-</span> sb_tpm <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tpm_avg <span class="sc">&gt;=</span> <span class="dv">1</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dbplyr'
+
+The following objects are masked from 'package:dplyr':
+
+    ident, sql</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+clusterProfiler v4.12.1  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
+
+If you use clusterProfiler in published research, please cite:
+T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu. clusterProfiler 4.0: A universal enrichment tool for interpreting omics data. The Innovation. 2021, 2(3):100141
+
+Attaching package: 'clusterProfiler'
+
+The following object is masked from 'package:purrr':
+
+    simplify
+
+The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DOSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>DOSE v3.30.2  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
+
+If you use DOSE in published research, please cite:
+Guangchuang Yu, Li-Gen Wang, Guang-Rong Yan, Qing-Yu He. DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis. Bioinformatics 2015, 31(4):608-609</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>sb_go_terms <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sb_all_go_terms.txt?raw=TRUE"</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(sb_go_terms, <span class="at">destfile =</span> <span class="st">"~/Downloads/sb_go_terms.txt"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>sb_go_terms <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/sb_go_terms.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 223185 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (4): Gene stable ID, Transcript stable ID, GO term name, GO domain
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the go terms, we just want a 2 column df mapping gene ID to term</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>sb_go_terms <span class="ot">&lt;-</span> sb_go_terms <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span>,<span class="dv">1</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run the enricher function</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enricher</span>(</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  common_sorghum_genes<span class="sc">$</span>gene, <span class="co"># common set of PRM modified mRNAs</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, </span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>, </span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  sb_tpm<span class="sc">$</span>Gene, <span class="co"># background gene list</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">10</span>, <span class="co"># default values of 10 and 500</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxGSSize =</span> <span class="dv">500</span>,</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a> <span class="at">TERM2GENE =</span>  sb_go_terms</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate fold-enrichment</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co"># from here:</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="co"># https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>sb_ego2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ego, <span class="at">FoldEnrichment =</span> <span class="fu">parse_ratio</span>(GeneRatio) <span class="sc">/</span> <span class="fu">parse_ratio</span>(BgRatio))</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="co"># make dot-plot</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>sb_go <span class="ot">&lt;-</span> sb_ego2<span class="sc">@</span>result <span class="sc">%&gt;%</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(p.adjust) <span class="sc">%&gt;%</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_ID =</span> <span class="fu">str_wrap</span>(ID, <span class="at">width =</span> <span class="dv">20</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> FoldEnrichment, <span class="at">x =</span> <span class="fu">reorder</span>(new_ID, <span class="sc">-</span>FoldEnrichment), <span class="at">color =</span> p.adjust))<span class="sc">+</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">high =</span> <span class="st">"red"</span>, <span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="sc">~</span> <span class="fu">sprintf</span>(<span class="at">fmt =</span> <span class="st">"%0.01e"</span>, .),</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Sorghum</span><span class="sc">\n</span><span class="st">padj"</span>) <span class="sc">+</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Fold-Enrichment"</span>) <span class="sc">+</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Sorghum"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>this code block does the exact same thing for Maize:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>zm_tpm <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/maize_tpm.txt?raw=TRUE"</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_tpm, <span class="at">destfile =</span> <span class="st">"~/Downloads/zm_tpm.txt"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>zm_tpm <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/zm_tpm.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 43460 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (1): Gene
+dbl (1): tpm_avg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>zm_tpm <span class="ot">&lt;-</span> zm_tpm <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tpm_avg <span class="sc">&gt;=</span> <span class="dv">1</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>zm_go_terms <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/zm_all_go_terms.txt?raw=TRUE"</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(zm_go_terms, <span class="at">destfile =</span> <span class="st">"~/Downloads/zm_go_terms.txt"</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>zm_go_terms <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/zm_go_terms.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 310719 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (4): Gene stable ID, Transcript stable ID, GO term name, GO domain
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the go terms, we just want a 2 column df mapping gene ID to term</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>zm_go_terms <span class="ot">&lt;-</span> zm_go_terms <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span>,<span class="dv">1</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run the enricher function</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enricher</span>(</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  common_maize_genes<span class="sc">$</span>gene, <span class="co"># common set of PRM modified mRNAs</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>, </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  zm_tpm<span class="sc">$</span>Gene, <span class="co"># background gene list</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">10</span>, <span class="co"># default values of 10 and 500</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxGSSize =</span> <span class="dv">500</span>,</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a> <span class="at">TERM2GENE =</span>  zm_go_terms</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate fold-enrichment</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co"># from here:</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="co"># https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>zm_ego2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ego, <span class="at">FoldEnrichment =</span> <span class="fu">parse_ratio</span>(GeneRatio) <span class="sc">/</span> <span class="fu">parse_ratio</span>(BgRatio))</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="co"># make dot-plot</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>zm_go <span class="ot">&lt;-</span> zm_ego2<span class="sc">@</span>result <span class="sc">%&gt;%</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(p.adjust) <span class="sc">%&gt;%</span></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_ID =</span> <span class="fu">str_wrap</span>(ID, <span class="at">width =</span> <span class="dv">20</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> FoldEnrichment, <span class="at">x =</span> <span class="fu">reorder</span>(new_ID, <span class="sc">-</span>FoldEnrichment), <span class="at">color =</span> p.adjust))<span class="sc">+</span></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">high =</span> <span class="st">"red"</span>, <span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="sc">~</span> <span class="fu">sprintf</span>(<span class="at">fmt =</span> <span class="st">"%0.01e"</span>, .),</span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Maize</span><span class="sc">\n</span><span class="st">padj"</span>) <span class="sc">+</span></span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Fold-Enrichment"</span>) <span class="sc">+</span></span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Maize"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and this block is for setaria go terms:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>si_tpm <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/setaria_tpm.txt?raw=TRUE"</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_tpm, <span class="at">destfile =</span> <span class="st">"~/Downloads/si_tpm.txt"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>si_tpm <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/si_tpm.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 36241 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (1): Gene
+dbl (1): tpm_avg
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>si_tpm <span class="ot">&lt;-</span> si_tpm <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tpm_avg <span class="sc">&gt;=</span> <span class="dv">1</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>si_go_terms <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/si_all_go_terms.txt?raw=TRUE"</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(si_go_terms, <span class="at">destfile =</span> <span class="st">"~/Downloads/si_go_terms.txt"</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>si_go_terms <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/si_go_terms.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 192144 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (4): Gene stable ID, Transcript stable ID, GO term name, GO domain
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the go terms, we just want a 2 column df mapping gene ID to term</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>si_go_terms <span class="ot">&lt;-</span> si_go_terms <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span>,<span class="dv">1</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run the enricher function</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enricher</span>(</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  common_setaria_genes<span class="sc">$</span>gene, <span class="co"># common set of PRM modified mRNAs</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, </span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>, </span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  si_tpm<span class="sc">$</span>Gene, <span class="co"># background gene list</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">10</span>, <span class="co"># default values of 10 and 500</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxGSSize =</span> <span class="dv">500</span>,</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a> <span class="at">TERM2GENE =</span>  si_go_terms</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate fold-enrichment</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co"># from here:</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="co"># https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>si_ego2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ego, <span class="at">FoldEnrichment =</span> <span class="fu">parse_ratio</span>(GeneRatio) <span class="sc">/</span> <span class="fu">parse_ratio</span>(BgRatio))</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co"># make dot-plot</span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>si_go <span class="ot">&lt;-</span> si_ego2<span class="sc">@</span>result <span class="sc">%&gt;%</span></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(p.adjust) <span class="sc">%&gt;%</span></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_ID =</span> <span class="fu">str_wrap</span>(ID, <span class="at">width =</span> <span class="dv">20</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> FoldEnrichment, <span class="at">x =</span> <span class="fu">reorder</span>(new_ID, <span class="sc">-</span>FoldEnrichment), <span class="at">color =</span> p.adjust))<span class="sc">+</span></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">high =</span> <span class="st">"red"</span>, <span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="sc">~</span> <span class="fu">sprintf</span>(<span class="at">fmt =</span> <span class="st">"%0.01e"</span>, .),</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Setaria</span><span class="sc">\n</span><span class="st">padj"</span>) <span class="sc">+</span></span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Fold-Enrichment"</span>) <span class="sc">+</span></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Setaria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>patch them together to make figure 1D</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> sb_go <span class="sc">+</span> zm_go <span class="sc">+</span> si_go <span class="sc">&amp;</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>combined <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="supp-figure-1a" class="level1">
+<h1>Supp figure 1A</h1>
+<p>supplemental figure 1 A is the modification type distribution across the species:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>sb_mods <span class="ot">&lt;-</span> sb_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(full_position, pred_mod) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="st">"Sorghum"</span>)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>si_mods <span class="ot">&lt;-</span> si_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(full_position, pred_mod) <span class="sc">%&gt;%</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="st">"Setaria"</span>)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>zm_mods <span class="ot">&lt;-</span> zm_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(full_position, pred_mod) <span class="sc">%&gt;%</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="st">"Maize"</span>)</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>mods_combined <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sb_mods, si_mods, zm_mods)</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>mods_combined <span class="sc">%&gt;%</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, pred_mod) <span class="sc">%&gt;%</span></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> <span class="fu">round</span>((n <span class="sc">/</span> <span class="fu">sum</span>(n)),<span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> freq, <span class="at">fill =</span> pred_mod)) <span class="sc">+</span></span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>, <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>  ggsci<span class="sc">::</span><span class="fu">scale_fill_npg</span>(<span class="at">name =</span> <span class="st">"Predicted mod"</span>) <span class="sc">+</span></span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> scales<span class="sc">::</span><span class="fu">percent</span>(freq)), <span class="at">position =</span> <span class="fu">position_fill</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">8.5</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency of modification"</span>) <span class="sc">+</span></span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'species'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="supp-figure-1c" class="level1">
+<h1>Supp figure 1C</h1>
+<p>The next figure to make is supplemental figure 1C - the overlap of modified orthologs across all three species</p>
+<p>Orthologs are coming from Ensembl Plants</p>
+<p>Ensembl identifies orthologs by building gene trees then reconciliates them with species trees, see here:</p>
+<p><a href="https://useast.ensembl.org/info/genome/compara/homology_method.html" class="uri">https://useast.ensembl.org/info/genome/compara/homology_method.html</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>orthos <span class="ot">&lt;-</span> <span class="st">"https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_ensembl_orthologs.txt?raw=TRUE"</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(orthos, <span class="at">destfile =</span> <span class="st">"~/Downloads/orthologs.txt"</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>orthos <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"~/Downloads/orthologs.txt"</span>, <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col_names =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 65422 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (4): Gene stable ID, Transcript stable ID, Setaria italica gene stable I...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>orthos <span class="ot">&lt;-</span> orthos <span class="sc">%&gt;%</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SB =</span> <span class="dv">1</span>,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">SI =</span> <span class="dv">2</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">ZM =</span> <span class="dv">3</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># these next steps attach the ortholog data frame to the modified mRNAs and grabs the unique Sorghum IDs for overlap analysis</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>zm <span class="ot">&lt;-</span> zm_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(gene) <span class="sc">%&gt;%</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., orthos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gene"</span> <span class="ot">=</span> <span class="st">"ZM"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(SB) <span class="sc">%&gt;%</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">zm =</span> <span class="dv">1</span>)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>si <span class="ot">&lt;-</span> si_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(gene) <span class="sc">%&gt;%</span></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., orthos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gene"</span> <span class="ot">=</span> <span class="st">"SI"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(SB) <span class="sc">%&gt;%</span></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">si =</span> <span class="dv">1</span>)</span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>sb <span class="ot">&lt;-</span> sb_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(gene) <span class="sc">%&gt;%</span></span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>   <span class="fu">left_join</span>(., orthos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gene"</span> <span class="ot">=</span> <span class="st">"SB"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>   <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(gene) <span class="sc">%&gt;%</span></span>
+<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">sb =</span> <span class="dv">1</span>)</span>
+<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a>ortho_venn <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Maize =</span> zm<span class="sc">$</span>zm,</span>
+<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Sorghum =</span> sb<span class="sc">$</span>sb,</span>
+<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Setaria =</span> si<span class="sc">$</span>si)</span>
+<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggvenn)</span>
+<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(ortho_venn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To do the stats on this, I used this R package and the associated vignette to perform multi-set intersection testing:</p>
+<p><a href="https://cran.r-project.org/web/packages/SuperExactTest/vignettes/set_html.html" class="uri">https://cran.r-project.org/web/packages/SuperExactTest/vignettes/set_html.html</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the total number of distinct sorghum orthologs</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>orthos <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(SB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18,163 × 1
+   SB               
+   &lt;chr&gt;            
+ 1 SORBI_3008G134800
+ 2 SORBI_3008G021800
+ 3 SORBI_3008G072400
+ 4 SORBI_3008G141100
+ 5 SORBI_3008G032100
+ 6 SORBI_3008G179900
+ 7 SORBI_3008G115900
+ 8 SORBI_3008G116800
+ 9 SORBI_3008G013200
+10 SORBI_3008G113500
+# ℹ 18,153 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 18163</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="dv">18163</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ortho_venn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ Maize  : chr [1:1829] "SORBI_3001G541500" "SORBI_3001G540600" "SORBI_3001G538800" "SORBI_3001G537200" ...
+ $ Sorghum: chr [1:2135] "SORBI_3001G000800" "SORBI_3001G001400" "SORBI_3001G001900" "SORBI_3001G002800" ...
+ $ Setaria: chr [1:1912] "SORBI_3003G328100" "SORBI_3004G000300" "SORBI_3004G000400" "SORBI_3004G000500" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">length.gene.sets=</span><span class="fu">sapply</span>(ortho_venn,length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Maize Sorghum Setaria 
+   1829    2135    1912 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">num.expcted.overlap=</span>total<span class="sc">*</span><span class="fu">do.call</span>(prod,<span class="fu">as.list</span>(length.gene.sets<span class="sc">/</span>total)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 22.63207</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SuperExactTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'SuperExactTest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:lubridate':
+
+    intersect, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    intersect, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># what's the smallest possible number of overlap</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the value of ZM</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1829</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>(<span class="at">p=</span><span class="fu">sapply</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1829</span>,<span class="cf">function</span>(i) <span class="fu">dpsets</span>(i, length.gene.sets, <span class="at">n=</span>total)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   [1]  1.017691e-10  2.380954e-09  2.781138e-08  2.162565e-07  1.259340e-06
+   [6]  5.858311e-06  2.267702e-05  7.513073e-05  2.174813e-04  5.587764e-04
+  [11]  1.290211e-03  2.704295e-03  5.188267e-03  9.174688e-03  1.504313e-02
+  [16]  2.298710e-02  3.288238e-02  4.420536e-02  5.604337e-02  6.721302e-02
+  [21]  7.646569e-02  8.272766e-02  8.530831e-02  8.402069e-02  7.918755e-02
+  [26]  7.154143e-02  6.205595e-02  5.175793e-02  4.156559e-02  3.218166e-02
+  [31]  2.405009e-02  1.736766e-02  1.213204e-02  8.205757e-03  5.378908e-03
+  [36]  3.420076e-03  2.111047e-03  1.265947e-03  7.380834e-04  4.186666e-04
+  [41]  2.312009e-04  1.243770e-04  6.521956e-05  3.335409e-05  1.664517e-05
+  [46]  8.109976e-06  3.859730e-06  1.795169e-06  8.163215e-07  3.630886e-07
+  [51]  1.580302e-07  6.733134e-08  2.809380e-08  1.148366e-08  4.600242e-09
+  [56]  1.806594e-09  6.957654e-10  2.628609e-10  9.745029e-11  3.546199e-11
+  [61]  1.267040e-11  4.446161e-12  1.532724e-12  5.192054e-13  1.728702e-13
+  [66]  5.658643e-14  1.821454e-14  5.766832e-15  1.796246e-15  5.505509e-16
+  [71]  1.660822e-16  4.932087e-17  1.442137e-17  4.152730e-18  1.177860e-18
+  [76]  3.291280e-19  9.062009e-20  2.458937e-20  6.576674e-21  1.734093e-21
+  [81]  4.508321e-22  1.155849e-22  2.922786e-23  7.290660e-24  1.794210e-24
+  [86]  4.356898e-25  1.044093e-25  2.469543e-26  5.765899e-27  1.329064e-27
+  [91]  3.024880e-28  6.798396e-29  1.509014e-29  3.308409e-30  7.165301e-31
+  [96]  1.533160e-31  3.241354e-32  6.771701e-33  1.398129e-33  2.853119e-34
+ [101]  5.755189e-35  1.147650e-35  2.262618e-36  4.410694e-37  8.502308e-38
+ [106]  1.620842e-38  3.056030e-39  5.699355e-40  1.051436e-40  1.918958e-41
+ [111]  3.465054e-42  6.190873e-43  1.094526e-43  1.914991e-44  3.315948e-45
+ [116]  5.683053e-46  9.640985e-47  1.619044e-47  2.691688e-48  4.430476e-49
+ [121]  7.220480e-50  1.165203e-50  1.862027e-51  2.946784e-52  4.618669e-53
+ [126]  7.170002e-54  1.102511e-54  1.679327e-55  2.533976e-56  3.788007e-57
+ [131]  5.610296e-58  8.232900e-59  1.197118e-59  1.724894e-60  2.462939e-61
+ [136]  3.485254e-62  4.887966e-63  6.794506e-64  9.361520e-65  1.278545e-65
+ [141]  1.730968e-66  2.323202e-67  3.091231e-68  4.077965e-69  5.333890e-70
+ [146]  6.917572e-71  8.895955e-72  1.134438e-72  1.434623e-73  1.799217e-74
+ [151]  2.237879e-75  2.760681e-76  3.377855e-77  4.099485e-78  4.935138e-79
+ [156]  5.893441e-80  6.981613e-81  8.204977e-82  9.566452e-83  1.106607e-83
+ [161]  1.270052e-84  1.446279e-85  1.634185e-86  1.832252e-87  2.038543e-88
+ [166]  2.250718e-89  2.466063e-90  2.681543e-91  2.893862e-92  3.099549e-93
+ [171]  3.295046e-94  3.476813e-95  3.641436e-96  3.785731e-97  3.906848e-98
+ [176]  4.002368e-99 4.070381e-100 4.109549e-101 4.119152e-102 4.099108e-103
+ [181] 4.049971e-104 3.972907e-105 3.869651e-106 3.742438e-107 3.593930e-108
+ [186] 3.427119e-109 3.245230e-110 3.051622e-111 2.849685e-112 2.642749e-113
+ [191] 2.433994e-114 2.226379e-115 2.022584e-116 1.824958e-117 1.635496e-118
+ [196] 1.455820e-119 1.287176e-120 1.130451e-121 9.861877e-123 8.546181e-124
+ [201] 7.356985e-125 6.291487e-126 5.344939e-127 4.511059e-128 3.782427e-129
+ [206] 3.150860e-130 2.607737e-131 2.144296e-132 1.751868e-133 1.422078e-134
+ [211] 1.146992e-135 9.192254e-137 7.320102e-138 5.792356e-139 4.554549e-140
+ [216] 3.558743e-141 2.763237e-142 2.132154e-143 1.634958e-144 1.245923e-145
+ [221] 9.435853e-147 7.102065e-148 5.312638e-149 3.949720e-150 2.918510e-151
+ [226] 2.143400e-152 1.564589e-153 1.135169e-154 8.186386e-156 5.868174e-157
+ [231] 4.181198e-158 2.961374e-159 2.084915e-160 1.459128e-161 1.015118e-162
+ [236] 7.020441e-164 4.826641e-165 3.298873e-166 2.241473e-167 1.514104e-168
+ [241] 1.016810e-169 6.788793e-171 4.506310e-172 2.973941e-173 1.951342e-174
+ [246] 1.273007e-175 8.257177e-177 5.325280e-178 3.414837e-179 2.177313e-180
+ [251] 1.380390e-181 8.701998e-183 5.454803e-184 3.400074e-185 2.107430e-186
+ [256] 1.298913e-187 7.961133e-189 4.852260e-190 2.940990e-191 1.772677e-192
+ [261] 1.062571e-193 6.334102e-195 3.755056e-196 2.213901e-197 1.298123e-198
+ [266] 7.569993e-200 4.390386e-201 2.532464e-202 1.452856e-203 8.289849e-205
+ [271] 4.704578e-206 2.655524e-207 1.490874e-208 8.325262e-210 4.624095e-211
+ [276] 2.554658e-212 1.403851e-213 7.673565e-215 4.172209e-216 2.256488e-217
+ [281] 1.213956e-218 6.496527e-220 3.458380e-221 1.831397e-222 9.647514e-224
+ [286] 5.055644e-225 2.635546e-226 1.366792e-227 7.051427e-229 3.619087e-230
+ [291] 1.847877e-231 9.386510e-233 4.743475e-234 2.384818e-235 1.192847e-236
+ [296] 5.935937e-238 2.938825e-239 1.447580e-240 7.094143e-242 3.459000e-243
+ [301] 1.678026e-244 8.099324e-246 3.889601e-247 1.858539e-248 8.835951e-250
+ [306] 4.179784e-251 1.967331e-252 9.213581e-254 4.293494e-255 1.990806e-256
+ [311] 9.185156e-258 4.216847e-259 1.926357e-260 8.756639e-262 3.960898e-263
+ [316] 1.782828e-264 7.985253e-266 3.559059e-267 1.578530e-268 6.966993e-270
+ [321] 3.059967e-271 1.337428e-272 5.817153e-274 2.517911e-275 1.084586e-276
+ [326] 4.649268e-278 1.983381e-279 8.420389e-281 3.557674e-282 1.495932e-283
+ [331] 6.259977e-285 2.607061e-286 1.080594e-287 4.456646e-289 1.832747e-290
+ [336] 7.466430e-292 2.148104e-293  0.000000e+00  0.000000e+00  0.000000e+00
+ [341]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [346]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [351]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [356]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [361]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [366]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [371]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [376]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [381]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [386]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [391]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [396]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [401]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [406]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [411]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [416]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [421]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [426]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [431]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [436]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [441]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [446]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [451]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [456]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [461]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [466]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [471]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [476]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [481]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [486]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [491]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [496]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [501]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [506]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [511]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [516]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [521]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [526]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [531]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [536]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [541]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [546]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [551]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [556]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [561]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [566]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [571]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [576]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [581]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [586]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [591]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [596]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [601]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [606]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [611]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [616]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [621]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [626]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [631]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [636]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [641]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [646]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [651]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [656]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [661]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [666]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [671]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [676]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [681]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [686]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [691]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [696]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [701]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [706]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [711]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [716]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [721]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [726]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [731]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [736]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [741]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [746]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [751]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [756]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [761]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [766]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [771]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [776]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [781]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [786]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [791]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [796]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [801]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [806]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [811]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [816]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [821]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [826]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [831]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [836]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [841]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [846]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [851]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [856]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [861]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [866]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [871]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [876]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [881]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [886]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [891]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [896]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [901]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [906]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [911]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [916]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [921]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [926]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [931]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [936]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [941]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [946]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [951]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [956]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [961]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [966]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [971]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [976]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [981]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [986]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [991]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+ [996]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1001]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1006]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1011]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1016]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1021]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1026]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1031]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1036]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1041]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1046]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1051]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1056]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1061]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1066]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1071]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1076]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1081]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1086]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1091]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1096]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1101]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1106]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1111]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1116]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1121]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1126]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1131]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1136]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1141]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1146]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1151]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1156]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1161]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1166]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1171]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1176]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1181]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1186]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1191]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1196]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1201]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1206]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1211]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1216]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1221]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1226]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1231]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1236]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1241]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1246]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1251]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1256]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1261]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1266]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1271]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1276]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1281]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1286]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1291]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1296]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1301]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1306]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1311]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1316]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1321]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1326]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1331]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1336]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1341]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1346]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1351]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1356]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1361]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1366]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1371]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1376]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1381]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1386]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1391]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1396]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1401]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1406]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1411]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1416]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1421]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1426]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1431]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1436]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1441]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1446]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1451]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1456]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1461]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1466]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1471]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1476]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1481]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1486]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1491]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1496]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1501]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1506]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1511]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1516]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1521]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1526]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1531]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1536]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1541]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1546]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1551]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1556]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1561]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1566]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1571]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1576]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1581]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1586]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1591]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1596]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1601]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1606]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1611]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1616]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1621]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1626]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1631]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1636]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1641]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1646]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1651]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1656]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1661]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1666]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1671]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1676]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1681]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1686]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1691]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1696]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1701]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1706]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1711]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1716]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1721]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1726]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1731]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1736]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1741]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1746]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1751]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1756]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1761]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1766]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1771]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1776]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1781]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1786]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1791]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1796]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1801]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1806]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1811]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1816]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1821]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+[1826]  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, we compute the observed intersection among the 3 gene sets and then the corresponding fold enrichment (FE) by:</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>common.genes<span class="ot">=</span><span class="fu">intersect</span>(ortho_venn[[<span class="dv">1</span>]], ortho_venn[[<span class="dv">2</span>]], ortho_venn[[<span class="dv">3</span>]])</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>(<span class="at">num.observed.overlap=</span><span class="fu">length</span>(common.genes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 474</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">FE=</span>num.observed.overlap<span class="sc">/</span>num.expcted.overlap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.94373</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dpsets</span>(num.observed.overlap, length.gene.sets, <span class="at">n=</span>total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cpsets</span>(num.observed.overlap<span class="dv">-1</span>, length.gene.sets, <span class="at">n=</span>total, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>fit<span class="ot">=</span><span class="fu">MSET</span>(ortho_venn, <span class="at">n=</span>total, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span>FE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.94373</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="supp-figure-1d" class="level1">
+<h1>Supp figure 1D</h1>
+<p>The next figure compares the number of PRMs between orthologs of all species</p>
+<p>First, limit the orthologs by each set of PRM marked mRNAs/genes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>si_common_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(si_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>sb_common_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sb_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>zm_common_genes <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(zm_h1_common<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gene =</span> <span class="dv">1</span>)</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>zm_orthologs <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(orthos, zm_common_genes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ZM"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>sb_orthologs <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(orthos, sb_common_genes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SB"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>si_orthologs <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(orthos, si_common_genes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SI"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With these ortholog mappings established, we can plot the PRM differences b/w orthologs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sorghum vs setaria mapping</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>sb_si_ids <span class="ot">&lt;-</span> sb_orthologs <span class="sc">%&gt;%</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ZM) <span class="sc">%&gt;%</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() </span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>sb_si_join <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sb_si_ids, sb_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SB"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., si_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SI"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(sb_si_ids, sb_h1_common, by = c(SB = "gene")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 2 of `x` matches multiple rows in `y`.
+ℹ Row 6095 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(., si_h1_common, by = c(SI = "gene")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 2 of `x` matches multiple rows in `y`.
+ℹ Row 1939 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>sb_si_join <span class="ot">&lt;-</span> sb_si_join <span class="sc">%&gt;%</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SB, SI) <span class="sc">%&gt;%</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nsb =</span> <span class="fu">n_distinct</span>(full_position.x),</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">nsi =</span> <span class="fu">n_distinct</span>(full_position.y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'SB'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>sb_si_join.cor <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(sb_si_join<span class="sc">$</span>nsb,</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>    sb_si_join<span class="sc">$</span>nsi)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(nsb <span class="sc">~</span> nsi, </span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> sb_si_join)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>sb_si_join.cor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  sb_si_join$nsb and sb_si_join$nsi
+t = 14.269, df = 896, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3754613 0.4821597
+sample estimates:
+      cor 
+0.4303124 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>sb_si <span class="ot">&lt;-</span> sb_si_join <span class="sc">%&gt;%</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nsb <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(nsb), <span class="at">y =</span> nsi)) <span class="sc">+</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'# modified sites per Sorghum ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'PRMs/Setaria ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_abline</span>(<span class="at">linewidth =</span> .<span class="dv">85</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># xlim(c(0,65)) +</span></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">'r = 0.430, p &lt; 2.2e-16'</span>)</span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a><span class="co"># sorghum maize</span></span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>sb_zm_ids <span class="ot">&lt;-</span> sb_orthologs <span class="sc">%&gt;%</span></span>
+<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SI) <span class="sc">%&gt;%</span></span>
+<span id="cb83-18"><a href="#cb83-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb83-19"><a href="#cb83-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() </span>
+<span id="cb83-20"><a href="#cb83-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-21"><a href="#cb83-21" aria-hidden="true" tabindex="-1"></a>sb_zm_join <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sb_zm_ids, sb_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SB"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb83-22"><a href="#cb83-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., zm_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ZM"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb83-23"><a href="#cb83-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb83-24"><a href="#cb83-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(sb_zm_ids, sb_h1_common, by = c(SB = "gene")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 2 of `x` matches multiple rows in `y`.
+ℹ Row 6095 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(., zm_h1_common, by = c(ZM = "gene")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 1 of `x` matches multiple rows in `y`.
+ℹ Row 390 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>sb_zm_join <span class="ot">&lt;-</span> sb_zm_join <span class="sc">%&gt;%</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SB, ZM) <span class="sc">%&gt;%</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nsb =</span> <span class="fu">n_distinct</span>(full_position.x),</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">nzm =</span> <span class="fu">n_distinct</span>(full_position.y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'SB'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>sb_zm_join.cor <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(sb_zm_join<span class="sc">$</span>nsb,</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    sb_zm_join<span class="sc">$</span>nzm)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>sb_zm_join.cor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  sb_zm_join$nsb and sb_zm_join$nzm
+t = 13.135, df = 959, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3355237 0.4427828
+sample estimates:
+      cor 
+0.3904776 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>sb_zm <span class="ot">&lt;-</span> sb_zm_join <span class="sc">%&gt;%</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(nsb <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(nsb), <span class="at">y =</span> nzm)) <span class="sc">+</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'# modified sites per Sorghum ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'PRMs/Maize ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_abline</span>(<span class="at">linewidth =</span> .<span class="dv">85</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># xlim(c(0,65)) +</span></span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>)) <span class="sc">+</span></span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">'r = 0.39, p &lt; 2.2e-16'</span>)</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a><span class="co"># maize setaria</span></span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>si_zm_ids <span class="ot">&lt;-</span> si_orthologs <span class="sc">%&gt;%</span></span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SB) <span class="sc">%&gt;%</span></span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() </span>
+<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>si_zm_join <span class="ot">&lt;-</span> <span class="fu">left_join</span>(si_zm_ids, si_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"SI"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., zm_h1_common, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ZM"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(si_zm_ids, si_h1_common, by = c(SI = "gene")): Detected an unexpected many-to-many relationship between `x` and `y`.
+Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 2 of `x` matches multiple rows in `y`.
+ℹ Row 5279 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>si_zm_ids <span class="ot">&lt;-</span> si_zm_join <span class="sc">%&gt;%</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SI, ZM) <span class="sc">%&gt;%</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nsi =</span> <span class="fu">n_distinct</span>(full_position.x),</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">nzm =</span> <span class="fu">n_distinct</span>(full_position.y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'SI'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>si_zm_ids.cor <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(si_zm_ids<span class="sc">$</span>nsi,</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    si_zm_ids<span class="sc">$</span>nzm)</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>zm_si<span class="ot">&lt;-</span> si_zm_ids <span class="sc">%&gt;%</span></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(nsi <span class="sc">&lt;</span> <span class="dv">27</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(nsi), <span class="at">y =</span> nzm)) <span class="sc">+</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'# modified sites per Setaria ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'PRMs/Maize ortholog'</span>) <span class="sc">+</span></span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_abline</span>(<span class="at">linewidth =</span> .<span class="dv">85</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a> <span class="co"># xlim(c(0,65)) +</span></span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>)) <span class="sc">+</span></span>
+<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">'r = 0.316, p &lt; 2.2e-16'</span>)</span>
+<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>sb_zm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>sb_si</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>zm_si</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="supp-figure-1e" class="level1">
+<h1>Supp figure 1E</h1>
+<p>This supplemental figure shows the difference in RNA abundance (TPM) between PRM marked Sorghum mRNAs and non-marked Sorghum mRNAs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>mod_genes <span class="ot">&lt;-</span> sb_h1_common <span class="sc">%&gt;%</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(gene) <span class="sc">%&gt;%</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"modified"</span>)</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>sb_tpm <span class="sc">%&gt;%</span></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., mod_genes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Gene"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type2 =</span> <span class="fu">case_when</span>(type <span class="sc">==</span> <span class="st">"modified"</span> <span class="sc">~</span> <span class="st">"modified"</span>,</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">is.na</span>(type) <span class="sc">~</span> <span class="st">"not modified"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type2) <span class="sc">%&gt;%</span></span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_tpm =</span> <span class="fu">median</span>(tpm_avg),</span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  type2        mean_tpm     n
+  &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt;
+1 modified         78.5  2521
+2 not modified     10.2 16537</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>tpm_comparison <span class="ot">&lt;-</span> sb_tpm <span class="sc">%&gt;%</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., mod_genes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Gene"</span> <span class="ot">=</span> <span class="st">"gene"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type2 =</span> <span class="fu">case_when</span>(type <span class="sc">==</span> <span class="st">"modified"</span> <span class="sc">~</span> <span class="st">"modified"</span>,</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">is.na</span>(type) <span class="sc">~</span> <span class="st">"not modified"</span>))</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>tpm_comparison <span class="sc">%&gt;%</span></span>
+<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> tpm_avg, <span class="at">fill =</span> type2)) <span class="sc">+</span></span>
+<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">binwidth =</span> .<span class="dv">1</span>, <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#facet_wrap(~type2, ncol = 1, scales = "free_y") +</span></span>
+<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb101-14"><a href="#cb101-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"TPM"</span>) <span class="sc">+</span></span>
+<span id="cb101-15"><a href="#cb101-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_npg</span>(<span class="at">name =</span> <span class="st">"class"</span>) <span class="sc">+</span></span>
+<span id="cb101-16"><a href="#cb101-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data=</span><span class="fu">filter</span>(tpm_comparison, type2 <span class="sc">==</span> <span class="st">"modified"</span>), <span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fl">78.499</span>), <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb101-17"><a href="#cb101-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="fl">1.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb101-18"><a href="#cb101-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data=</span><span class="fu">filter</span>(tpm_comparison, type2 <span class="sc">==</span> <span class="st">"not modified"</span>), <span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fl">10.212</span>), <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb101-19"><a href="#cb101-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="fl">1.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="figure1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

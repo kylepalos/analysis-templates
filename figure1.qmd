@@ -1,0 +1,721 @@
+---
+title: "Figure1"
+author: "Kyle Palos"
+editor: visual
+output: 
+  github_document:
+    fig_width: 12
+    fig_height: 9
+    dev: jpeg
+---
+
+This script performs the analyses going into Figure 1 and associated supplement of the comparative RNA modification manuscript
+
+### Load packages:
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(ggsci)
+library(ggpointdensity)
+library(scales)
+library(viridis)
+library(ComplexHeatmap)
+library(ComplexUpset)
+library(circlize)
+library(RColorBrewer)
+library(readr)
+library(ggvenn)
+library(patchwork)
+```
+
+## Load in files from GitHub
+
+This block is for Sorghum:
+
+```{r}
+# establish URLs
+sb_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_hamr_clean.txt.gz?raw=TRUE"
+sb_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_hamr_clean.txt.gz?raw=TRUE"
+sb_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB1_modtect_clean.txt.gz?raw=TRUE"
+sb_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SB2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped file
+download.file(sb_h1, destfile = "~/Downloads/sbh1.txt.gz")
+download.file(sb_h2, destfile = "~/Downloads/sbh2.txt.gz")
+download.file(sb_m1, destfile = "~/Downloads/sbm1.txt.gz")
+download.file(sb_m2, destfile = "~/Downloads/sbm2.txt.gz")
+
+# Read the gzipped file into R
+sb_h1 <- fread("~/Downloads/sbh1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "sb_h1")
+
+sb_h2 <- fread("~/Downloads/sbh2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "sb_h2")
+
+sb_m1 <- fread("~/Downloads/sbm1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "sb_m1")
+
+sb_m2 <- fread("~/Downloads/sbm2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "sb_m2")
+
+```
+
+This block is for maize:
+
+```{r}
+# establish URLs
+zm_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_hamr_clean.txt.gz?raw=TRUE"
+zm_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_hamr_clean.txt.gz?raw=TRUE"
+zm_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM1_modtect_clean.txt.gz?raw=TRUE"
+zm_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/ZM2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped files
+download.file(zm_h1, destfile = "~/Downloads/zmh1.txt.gz")
+download.file(zm_h2, destfile = "~/Downloads/zmh2.txt.gz")
+download.file(zm_m1, destfile = "~/Downloads/zmm1.txt.gz")
+download.file(zm_m2, destfile = "~/Downloads/zmm2.txt.gz")
+
+# Use fread from data.table to read in
+# do some  cleaning
+zm_h1 <- fread("~/Downloads/zmh1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "zm_h1")
+
+zm_h2 <- fread("~/Downloads/zmh2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "zm_h2")
+
+zm_m1 <- fread("~/Downloads/zmm1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "zm_m1")
+
+zm_m2 <- fread("~/Downloads/zmm2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "zm_m2")
+```
+
+Setaria:
+
+```{r}
+# establish URLs
+si_h1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_hamr_clean.txt.gz?raw=TRUE"
+si_h2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_hamr_clean.txt.gz?raw=TRUE"
+si_m1 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI1_modtect_clean.txt.gz?raw=TRUE"
+si_m2 <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/SI2_modtect_clean.txt.gz?raw=TRUE"
+
+# Download the gzipped files
+download.file(si_h1, destfile = "~/Downloads/sih1.txt.gz")
+download.file(si_h2, destfile = "~/Downloads/sih2.txt.gz")
+download.file(si_m1, destfile = "~/Downloads/sim1.txt.gz")
+download.file(si_m2, destfile = "~/Downloads/sim2.txt.gz")
+
+# Use fread from data.table to read in
+# do some  cleaning
+si_h1 <- fread("~/Downloads/sih1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "si_h1")
+
+si_h2 <- fread("~/Downloads/sih2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v18:v20)) %>% rename(gene = v21) %>% mutate(experiment = "si_h2")
+
+si_m1 <- fread("~/Downloads/sim1.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "si_m1")
+
+si_m2 <- fread("~/Downloads/sim2.txt.gz", fill = T, na.strings = c("",NA), stringsAsFactors = F) %>% as_tibble() %>% janitor::clean_names() %>% select(-c(v34:v36)) %>% rename(gene = v37) %>% mutate(experiment = "si_m2")
+```
+
+### Retain sites that are found in both algorithms and in both replicates
+
+Generate a unique identifier for each PRM by combining the chromosome, start, and end
+
+Find the unique elements, inspired from this [post](#%20https://stackoverflow.com/questions/49287337/how-to-select-common-values-in-multiple-data-frames-in-r)
+
+```{r}
+# make a new column to specify the site location in the chromosome
+sb_h1 <- sb_h1 %>% unite(col = full_position, 1:3, remove = F)
+sb_h2 <- sb_h2 %>% unite(col = full_position, 1:3, remove = F)
+sb_m1 <- sb_m1 %>% unite(col = full_position, 1:3, remove = F)
+sb_m2 <- sb_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+
+# this bit finds the shared elements between all those unique modified sites
+common_elements <- Reduce(intersect, list(sb_h1[, 1], sb_h2[, 1], sb_m1[, 1], sb_m2[,1]))
+
+# only retain the common sites in these dataframes
+sb_h1_common <- inner_join(common_elements, sb_h1, by = "full_position")
+sb_h2_common <- inner_join(common_elements, sb_h2, by = "full_position")
+sb_m1_common <- inner_join(common_elements, sb_m1, by = "full_position")
+sb_m2_common <- inner_join(common_elements, sb_m2, by = "full_position")
+
+common_sorghum_genes <- as.data.frame(sb_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+```
+
+Do the same for maize and Setaria:
+
+```{r}
+# maize
+zm_h1 <- zm_h1 %>% unite(col = full_position, 1:3, remove = F)
+zm_h2 <- zm_h2 %>% unite(col = full_position, 1:3, remove = F)
+zm_m1 <- zm_m1 %>% unite(col = full_position, 1:3, remove = F)
+zm_m2 <- zm_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+
+common_elements <- Reduce(intersect, list(zm_h1[, 1], zm_h2[, 1], zm_m1[, 1], zm_m2[,1]))
+
+zm_h1_common <- inner_join(common_elements, zm_h1, by = "full_position")
+zm_h2_common <- inner_join(common_elements, zm_h2, by = "full_position")
+zm_m1_common <- inner_join(common_elements, zm_m1, by = "full_position")
+zm_m2_common <- inner_join(common_elements, zm_m2, by = "full_position")
+
+# what are the commonly modified genes?
+common_maize_genes <- as.data.frame(zm_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+
+# setaria
+si_h1 <- si_h1 %>% unite(col = full_position, 1:3, remove = F)
+si_h2 <- si_h2 %>% unite(col = full_position, 1:3, remove = F)
+si_m1 <- si_m1 %>% unite(col = full_position, 1:3, remove = F)
+si_m2 <- si_m2 %>% unite(col = full_position, 1:3, remove = F)
+
+common_elements <- Reduce(intersect, list(si_h1[, 1], si_h2[, 1], si_m1[, 1], si_m2[,1]))
+
+si_h1_common <- inner_join(common_elements, si_h1, by = "full_position")
+si_h2_common <- inner_join(common_elements, si_h2, by = "full_position")
+si_m1_common <- inner_join(common_elements, si_m1, by = "full_position")
+si_m2_common <- inner_join(common_elements, si_m2, by = "full_position")
+
+common_setaria_genes <- as.data.frame(si_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+```
+
+## Visualize overlap of PRMs and modified mRNAs based on repiclates and algorithms
+
+Do it for Sorghum, that's:
+
+# Figure 1B
+
+```{r}
+sb_sites <- list(HAMR1 = sb_h1$full_position,
+                    HAMR2 = sb_h2$full_position,
+                    MT1 = sb_m1$full_position,
+                    MT2 = sb_m2$full_position)
+ggvenn(sb_sites, text_size = 12,
+       show_percentage = F)            
+
+
+library(ggplotify)
+venn <- as.ggplot(ggvenn(sb_sites, text_size = 12,,
+                         show_percentage = F,
+                         fill_color = c("blue", "bisque2",
+                                                   "red2",
+                                                   "burlywood"),
+                         set_name_size = 8),
+                  )
+venn
+```
+
+Visualize enriched GO terms of PRM marked mRNAs
+
+GO terms mapped to genes acquired from Ensembl Plants Biomart
+
+Background gene list for go terms is all expressed genes (TPM \>= 1)
+
+# Figure 1D
+
+```{r}
+# load in sorghum tpm and go terms
+sb_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_tpm.txt?raw=TRUE"
+
+# Download
+download.file(sb_tpm, destfile = "~/Downloads/sb_tpm.txt")
+
+# read
+sb_tpm <- read_delim("~/Downloads/sb_tpm.txt", delim = "\t", col_names = T)
+
+sb_tpm <- sb_tpm %>%
+  filter(tpm_avg >= 1)
+
+library(dbplyr)
+library(clusterProfiler)
+library(DOSE)
+library(enrichplot)
+
+sb_go_terms <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sb_all_go_terms.txt?raw=TRUE"
+
+download.file(sb_go_terms, destfile = "~/Downloads/sb_go_terms.txt")
+
+sb_go_terms <- read_delim("~/Downloads/sb_go_terms.txt", delim = "\t", col_names = T)
+
+# For the go terms, we just want a 2 column df mapping gene ID to term
+sb_go_terms <- sb_go_terms %>%
+  select(3,1)
+
+
+# run the enricher function
+ego <- enricher(
+  common_sorghum_genes$gene, # common set of PRM modified mRNAs
+  pvalueCutoff = 0.05, 
+  pAdjustMethod = "BH", 
+  sb_tpm$Gene, # background gene list
+  minGSSize = 10, # default values of 10 and 500
+  maxGSSize = 500,
+  qvalueCutoff = 0.05,
+ TERM2GENE =  sb_go_terms
+)
+
+# calculate fold-enrichment
+# from here:
+# https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html
+sb_ego2 <- mutate(ego, FoldEnrichment = parse_ratio(GeneRatio) / parse_ratio(BgRatio))
+
+
+# make dot-plot
+library(scales)
+sb_go <- sb_ego2@result %>%
+  arrange(p.adjust) %>%
+  slice_head(n = 7) %>%
+  mutate(new_ID = str_wrap(ID, width = 20)) %>%
+  ggplot(aes(y = FoldEnrichment, x = reorder(new_ID, -FoldEnrichment), color = p.adjust))+
+  geom_point(size = 10) +
+  coord_flip() +
+  scale_color_gradient(high = "red", low = "blue",
+                      labels = ~ sprintf(fmt = "%0.01e", .),
+                      name = "Sorghum\npadj") +
+  theme_bw(base_size = 12) +
+  xlab("") + ylab("Fold-Enrichment") +
+  theme(text = element_text(face = "bold")) +
+  ggtitle("Sorghum")
+```
+
+this code block does the exact same thing for Maize:
+
+```{r}
+zm_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/maize_tpm.txt?raw=TRUE"
+
+download.file(zm_tpm, destfile = "~/Downloads/zm_tpm.txt")
+
+zm_tpm <- read_delim("~/Downloads/zm_tpm.txt", delim = "\t", col_names = T)
+
+zm_tpm <- zm_tpm %>%
+  filter(tpm_avg >= 1)
+
+zm_go_terms <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/zm_all_go_terms.txt?raw=TRUE"
+
+download.file(zm_go_terms, destfile = "~/Downloads/zm_go_terms.txt")
+
+zm_go_terms <- read_delim("~/Downloads/zm_go_terms.txt", delim = "\t", col_names = T)
+
+# For the go terms, we just want a 2 column df mapping gene ID to term
+zm_go_terms <- zm_go_terms %>%
+  select(3,1)
+
+
+# run the enricher function
+ego <- enricher(
+  common_maize_genes$gene, # common set of PRM modified mRNAs
+  pvalueCutoff = 0.05, 
+  pAdjustMethod = "BH", 
+  zm_tpm$Gene, # background gene list
+  minGSSize = 10, # default values of 10 and 500
+  maxGSSize = 500,
+  qvalueCutoff = 0.05,
+ TERM2GENE =  zm_go_terms
+)
+
+# calculate fold-enrichment
+# from here:
+# https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html
+zm_ego2 <- mutate(ego, FoldEnrichment = parse_ratio(GeneRatio) / parse_ratio(BgRatio))
+
+
+# make dot-plot
+library(scales)
+zm_go <- zm_ego2@result %>%
+  arrange(p.adjust) %>%
+  slice_head(n = 7) %>%
+  mutate(new_ID = str_wrap(ID, width = 20)) %>%
+  ggplot(aes(y = FoldEnrichment, x = reorder(new_ID, -FoldEnrichment), color = p.adjust))+
+  geom_point(size = 10) +
+  coord_flip() +
+  scale_color_gradient(high = "red", low = "blue",
+                      labels = ~ sprintf(fmt = "%0.01e", .),
+                      name = "Maize\npadj") +
+  theme_bw(base_size = 12) +
+  xlab("") + ylab("Fold-Enrichment") +
+  theme(text = element_text(face = "bold")) +
+  ggtitle("Maize")
+```
+
+and this block is for setaria go terms:
+
+```{r}
+si_tpm <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/setaria_tpm.txt?raw=TRUE"
+
+download.file(si_tpm, destfile = "~/Downloads/si_tpm.txt")
+
+si_tpm <- read_delim("~/Downloads/si_tpm.txt", delim = "\t", col_names = T)
+
+si_tpm <- si_tpm %>%
+  filter(tpm_avg >= 1)
+
+si_go_terms <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/si_all_go_terms.txt?raw=TRUE"
+
+download.file(si_go_terms, destfile = "~/Downloads/si_go_terms.txt")
+
+si_go_terms <- read_delim("~/Downloads/si_go_terms.txt", delim = "\t", col_names = T)
+
+# For the go terms, we just want a 2 column df mapping gene ID to term
+si_go_terms <- si_go_terms %>%
+  select(3,1)
+
+
+# run the enricher function
+ego <- enricher(
+  common_setaria_genes$gene, # common set of PRM modified mRNAs
+  pvalueCutoff = 0.05, 
+  pAdjustMethod = "BH", 
+  si_tpm$Gene, # background gene list
+  minGSSize = 10, # default values of 10 and 500
+  maxGSSize = 500,
+  qvalueCutoff = 0.05,
+ TERM2GENE =  si_go_terms
+)
+
+# calculate fold-enrichment
+# from here:
+# https://yulab-smu.top/biomedical-knowledge-mining-book/clusterProfiler-dplyr.html
+si_ego2 <- mutate(ego, FoldEnrichment = parse_ratio(GeneRatio) / parse_ratio(BgRatio))
+
+
+# make dot-plot
+library(scales)
+si_go <- si_ego2@result %>%
+  arrange(p.adjust) %>%
+  slice_head(n = 7) %>%
+  mutate(new_ID = str_wrap(ID, width = 20)) %>%
+  ggplot(aes(y = FoldEnrichment, x = reorder(new_ID, -FoldEnrichment), color = p.adjust))+
+  geom_point(size = 10) +
+  coord_flip() +
+  scale_color_gradient(high = "red", low = "blue",
+                      labels = ~ sprintf(fmt = "%0.01e", .),
+                      name = "Setaria\npadj") +
+  theme_bw(base_size = 12) +
+  xlab("") + ylab("Fold-Enrichment") +
+  theme(text = element_text(face = "bold")) +
+  ggtitle("Setaria")
+```
+
+patch them together to make figure 1D
+
+```{r}
+combined <- sb_go + zm_go + si_go & theme(legend.position = "right")
+combined + plot_layout(guides = "collect")
+```
+
+# Supp figure 1A
+
+supplemental figure 1 A is the modification type distribution across the species:
+
+```{r}
+sb_mods <- sb_h1_common %>%
+  select(full_position, pred_mod) %>%
+  distinct() %>%
+  mutate(species = "Sorghum")
+
+si_mods <- si_h1_common %>%
+  select(full_position, pred_mod) %>%
+  distinct() %>%
+  mutate(species = "Setaria")
+
+zm_mods <- zm_h1_common %>%
+  select(full_position, pred_mod) %>%
+  distinct() %>%
+  mutate(species = "Maize")
+
+mods_combined <- rbind(sb_mods, si_mods, zm_mods)
+
+
+
+mods_combined %>%
+  group_by(species, pred_mod) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round((n / sum(n)),3)) %>%
+    ungroup() %>%
+  ggplot(aes(x = species, y = freq, fill = pred_mod)) +
+ geom_bar(position="fill", stat="identity") +
+  ggsci::scale_fill_npg(name = "Predicted mod") +
+  geom_text(aes(label = scales::percent(freq)), position = position_fill(vjust = 0.5), size = 8.5, fontface = "bold") +
+  xlab("") +
+theme_classic(base_size = 12) +
+  ylab("Frequency of modification") +
+  theme(text = element_text(face = "bold"))
+```
+
+# Supp figure 1C
+
+The next figure to make is supplemental figure 1C - the overlap of modified orthologs across all three species
+
+Orthologs are coming from Ensembl Plants
+
+Ensembl identifies orthologs by building gene trees then reconciliates them with species trees, see here:
+
+<https://useast.ensembl.org/info/genome/compara/homology_method.html>
+
+```{r}
+orthos <- "https://github.com/kylepalos/comparative-PRM-paper/blob/main/figure1_files/sorghum_ensembl_orthologs.txt?raw=TRUE"
+
+download.file(orthos, destfile = "~/Downloads/orthologs.txt")
+
+orthos <- read_delim("~/Downloads/orthologs.txt", delim = "\t", col_names = T)
+
+orthos <- orthos %>%
+  select(-2) %>%
+  rename(SB = 1,
+         SI = 2,
+         ZM = 3)
+
+# these next steps attach the ortholog data frame to the modified mRNAs and grabs the unique Sorghum IDs for overlap analysis
+zm <- zm_h1_common %>%
+  distinct(gene) %>%
+  left_join(., orthos, by = c("gene" = "ZM")) %>%
+  dplyr::select(1,2) %>% na.omit() %>% distinct() %>%
+  distinct(SB) %>%
+  rename(zm = 1)
+
+si <- si_h1_common %>%
+  distinct(gene) %>%
+  left_join(., orthos, by = c("gene" = "SI")) %>%
+  dplyr::select(1,2) %>% na.omit() %>% distinct() %>%
+  distinct(SB) %>%
+  rename(si = 1)
+
+sb <- sb_h1_common %>%
+  distinct(gene) %>%
+   left_join(., orthos, by = c("gene" = "SB")) %>%
+   na.omit() %>% distinct() %>%
+  distinct(gene) %>%
+  rename(sb = 1)
+
+ortho_venn <- list(Maize = zm$zm,
+                   Sorghum = sb$sb,
+                   Setaria = si$si)
+
+library(ggvenn)
+ggvenn(ortho_venn)
+
+```
+
+To do the stats on this, I used this R package and the associated vignette to perform multi-set intersection testing:
+
+<https://cran.r-project.org/web/packages/SuperExactTest/vignettes/set_html.html>
+
+```{r}
+# get the total number of distinct sorghum orthologs
+orthos %>%
+  na.omit() %>%
+  distinct(SB)
+
+# 18163
+
+total <- 18163
+
+str(ortho_venn)
+
+(length.gene.sets=sapply(ortho_venn,length))
+
+(num.expcted.overlap=total*do.call(prod,as.list(length.gene.sets/total)))
+library(SuperExactTest)
+# what's the smallest possible number of overlap
+# the value of ZM
+# 1829
+(p=sapply(0:1829,function(i) dpsets(i, length.gene.sets, n=total)))
+
+# Next, we compute the observed intersection among the 3 gene sets and then the corresponding fold enrichment (FE) by:
+common.genes=intersect(ortho_venn[[1]], ortho_venn[[2]], ortho_venn[[3]])
+
+(num.observed.overlap=length(common.genes))
+
+(FE=num.observed.overlap/num.expcted.overlap)
+
+dpsets(num.observed.overlap, length.gene.sets, n=total)
+
+cpsets(num.observed.overlap-1, length.gene.sets, n=total, lower.tail=FALSE)
+
+
+fit=MSET(ortho_venn, n=total, lower.tail=FALSE)
+fit$FE
+fit$p.value
+```
+
+# Supp figure 1D
+
+The next figure compares the number of PRMs between orthologs of all species
+
+First, limit the orthologs by each set of PRM marked mRNAs/genes
+
+```{r}
+si_common_genes <- as.data.frame(si_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+sb_common_genes <- as.data.frame(sb_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+zm_common_genes <- as.data.frame(zm_h1_common$gene) %>% distinct() %>%
+  rename(gene = 1)
+
+
+zm_orthologs <- inner_join(orthos, zm_common_genes, by = c("ZM" = "gene")) %>%
+  distinct()
+
+sb_orthologs <- inner_join(orthos, sb_common_genes, by = c("SB" = "gene")) %>% distinct()
+
+si_orthologs <- inner_join(orthos, si_common_genes, by = c("SI" = "gene")) %>% distinct()
+```
+
+With these ortholog mappings established, we can plot the PRM differences b/w orthologs:
+
+```{r}
+# sorghum vs setaria mapping
+sb_si_ids <- sb_orthologs %>%
+  select(-ZM) %>%
+  na.omit() %>%
+  distinct() 
+
+sb_si_join <- left_join(sb_si_ids, sb_h1_common, by = c("SB" = "gene")) %>%
+  left_join(., si_h1_common, by = c("SI" = "gene")) %>%
+  drop_na() %>%
+  distinct()
+
+
+sb_si_join <- sb_si_join %>%
+  group_by(SB, SI) %>%
+  summarise(nsb = n_distinct(full_position.x),
+            nsi = n_distinct(full_position.y))
+
+
+sb_si_join.cor <- cor.test(sb_si_join$nsb,
+    sb_si_join$nsi)
+
+model <- lm(nsb ~ nsi, 
+            data = sb_si_join)
+
+
+sb_si_join.cor
+
+sb_si <- sb_si_join %>%
+  filter(nsb < 30) %>%
+  ggplot(., aes(x = as.factor(nsb), y = nsi)) +
+  geom_boxplot() +
+  theme_classic(base_size = 20) +
+  xlab('# modified sites per Sorghum ortholog') +
+  ylab('PRMs/Setaria ortholog') +
+ geom_abline(linewidth = .85, linetype = "dashed", color = "red") +
+ # xlim(c(0,65)) +
+  ylim(c(0,65)) +
+  theme(text = element_text(face = "bold")) +
+    labs(caption = 'r = 0.430, p < 2.2e-16')
+
+
+# sorghum maize
+sb_zm_ids <- sb_orthologs %>%
+  select(-SI) %>%
+  na.omit() %>%
+  distinct() 
+
+sb_zm_join <- left_join(sb_zm_ids, sb_h1_common, by = c("SB" = "gene")) %>%
+  left_join(., zm_h1_common, by = c("ZM" = "gene")) %>%
+  drop_na() %>%
+  distinct()
+
+
+sb_zm_join <- sb_zm_join %>%
+  group_by(SB, ZM) %>%
+  summarise(nsb = n_distinct(full_position.x),
+            nzm = n_distinct(full_position.y))
+
+
+
+sb_zm_join.cor <- cor.test(sb_zm_join$nsb,
+    sb_zm_join$nzm)
+
+sb_zm_join.cor
+
+sb_zm <- sb_zm_join %>%
+ filter(nsb < 30) %>%
+  ggplot(., aes(x = as.factor(nsb), y = nzm)) +
+  geom_boxplot() +
+  theme_classic(base_size = 20) +
+  xlab('# modified sites per Sorghum ortholog') +
+  ylab('PRMs/Maize ortholog') +
+ geom_abline(linewidth = .85, linetype = "dashed", color = "red") +
+ # xlim(c(0,65)) +
+  ylim(c(0,40)) +
+    theme(text = element_text(face = "bold")) +
+    labs(caption = 'r = 0.39, p < 2.2e-16')
+
+
+
+# maize setaria
+si_zm_ids <- si_orthologs %>%
+  select(-SB) %>%
+  na.omit() %>%
+  distinct() 
+
+si_zm_join <- left_join(si_zm_ids, si_h1_common, by = c("SI" = "gene")) %>%
+  left_join(., zm_h1_common, by = c("ZM" = "gene")) %>%
+  drop_na() %>%
+  distinct()
+
+
+si_zm_ids <- si_zm_join %>%
+  group_by(SI, ZM) %>%
+  summarise(nsi = n_distinct(full_position.x),
+            nzm = n_distinct(full_position.y))
+
+
+si_zm_ids.cor <- cor.test(si_zm_ids$nsi,
+    si_zm_ids$nzm)
+
+
+zm_si<- si_zm_ids %>%
+ filter(nsi < 27) %>%
+  ggplot(., aes(x = as.factor(nsi), y = nzm)) +
+  geom_boxplot() +
+  theme_classic(base_size = 20) +
+  xlab('# modified sites per Setaria ortholog') +
+  ylab('PRMs/Maize ortholog') +
+ geom_abline(linewidth = .85, linetype = "dashed", color = "red") +
+ # xlim(c(0,65)) +
+  ylim(c(0,40)) +
+      theme(text = element_text(face = "bold")) +
+    labs(caption = 'r = 0.316, p < 2.2e-16')
+
+
+sb_zm
+sb_si
+zm_si
+```
+
+# Supp figure 1E
+
+This supplemental figure shows the difference in RNA abundance (TPM) between PRM marked Sorghum mRNAs and non-marked Sorghum mRNAs:
+
+```{r}
+mod_genes <- sb_h1_common %>%
+  distinct(gene) %>%
+  mutate(type = "modified")
+
+
+sb_tpm %>%
+  left_join(., mod_genes, by = c("Gene" = "gene")) %>%
+  mutate(type2 = case_when(type == "modified" ~ "modified",
+                           is.na(type) ~ "not modified")) %>%
+  group_by(type2) %>%
+  summarise(mean_tpm = median(tpm_avg),
+            n = n())
+
+
+tpm_comparison <- sb_tpm %>%
+  left_join(., mod_genes, by = c("Gene" = "gene")) %>%
+  mutate(type2 = case_when(type == "modified" ~ "modified",
+                           is.na(type) ~ "not modified"))
+
+
+tpm_comparison %>%
+  ggplot(aes(x = tpm_avg, fill = type2)) +
+  geom_histogram(color = "white", binwidth = .1, position = "dodge") +
+  scale_x_log10() +
+  #facet_wrap(~type2, ncol = 1, scales = "free_y") +
+  theme_classic(base_size = 12) +
+  theme(text = element_text(face = "bold")) +
+  xlab("TPM") +
+  scale_fill_npg(name = "class") +
+  geom_vline(data=filter(tpm_comparison, type2 == "modified"), aes(xintercept = 78.499), color = "red",
+             linewidth = 1.5, linetype = "dashed", alpha = .5) +
+  geom_vline(data=filter(tpm_comparison, type2 == "not modified"), aes(xintercept = 10.212), color = "blue",
+             linewidth = 1.5, linetype = "dashed", alpha = .5)
+```
